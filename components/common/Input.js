@@ -13,17 +13,17 @@ import { Feather as Icon } from "@expo/vector-icons";
 export const CustomInput = React.forwardRef((props, ref) => {
   let width = undefined;
   if (props.small) {
-    width = Dim.width * 0.4;
+    width = "40%";
   } else if (props.medium) {
-    width = Dim.width * 0.6;
+    width = "60%";
   } else if (props.large) {
-    width = Dim.width * 0.8;
+    width = "80%";
   }
   const styles = StyleSheet.create({
     container: {
       width: width,
       flexDirection: "row",
-      backgroundColor: Colors.contrast,
+      backgroundColor: Colors.navbar,
       borderRadius: 23,
       margin: 12,
       alignItems: "center",
@@ -49,7 +49,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
         <Icon
           name={props.iconName}
           size={Font.p1.size}
-          color={props.iconColor ? props.iconColor : Colors.navbar}
+          color={props.iconColor ? props.iconColor : Colors.light}
           style={{
             marginRight: 10,
             //   backgroundColor: "#FF000030",
@@ -59,7 +59,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
 
       <TextInput
         placeholderTextColor={
-          props.placeholderColor ? props.placeholderColor : Colors.navbar
+          props.placeholderColor ? props.placeholderColor : Colors.light
         }
         on
         style={{
