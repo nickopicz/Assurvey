@@ -65,7 +65,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
         style={{
           ...styles.input,
           ...props.style,
-          color: props.textColor ? props.textColor : Colors.background,
+          color: props.textColor ? props.textColor : Colors.light,
         }}
         ref={ref}
         {...props}
