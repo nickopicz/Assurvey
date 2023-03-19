@@ -23,7 +23,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
     container: {
       width: width,
       flexDirection: "row",
-      backgroundColor: Colors.navbar,
+      backgroundColor: Colors.light,
       borderRadius: 23,
       margin: 12,
       alignItems: "center",
@@ -31,8 +31,8 @@ export const CustomInput = React.forwardRef((props, ref) => {
       paddingRight: 32,
       paddingVertical: 10,
 
-      borderColor: Colors.blueWhite,
-      borderWidth: props.focused && 2,
+      borderColor: Colors.earth,
+      borderWidth: 2,
     },
     input: {
       // backgroundColor: "#00FF0030",
@@ -59,13 +59,13 @@ export const CustomInput = React.forwardRef((props, ref) => {
 
       <TextInput
         placeholderTextColor={
-          props.placeholderColor ? props.placeholderColor : Colors.light
+          props.placeholderColor ? props.placeholderColor : Colors.navbar
         }
         on
         style={{
           ...styles.input,
           ...props.style,
-          color: props.textColor ? props.textColor : Colors.light,
+          color: props.textColor ? props.textColor : Colors.foreground,
         }}
         ref={ref}
         {...props}

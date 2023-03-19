@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CustomInput } from "../components/common/Input";
 import { RoundedButton } from "../components/common/Button";
 import { View, StyleSheet } from "react-native";
@@ -13,18 +13,28 @@ export const LandingScreen = ({ navigation }) => {
       alignItems: "center"
     },
     button: {
-      width: 250,
+      width: 200,
       height: 50,
       alignSelf: 'flex-end',
       marginTop: "2%",
       marginRight: "1%",
-      backgroundColor: Colors.contrast
+      backgroundColor: Colors.contrast,
+      borderWidth: 2,
+      borderColor: Colors.earth
     },
     inputContainer: {
       width: 400,
       height: 250,
       paddingVertical: 50,
       justifyContent: "center"
+    },
+    search: {
+      backgroundColor: Colors.confirm,
+      borderWidth: 2,
+      borderColor: Colors.earth,
+      width: 200,
+      height: 50
+
     }
   })
 
@@ -34,7 +44,7 @@ export const LandingScreen = ({ navigation }) => {
     <View style={styles.container}>
       <RoundedButton style={styles.button} onPress={() => {
         navigation.navigate("CreateAccount")
-      }}><CustomText p1 lightBlue>Log In / Sign-Up</CustomText></RoundedButton>
+      }}><CustomText p1 lightBlue>sign up / in</CustomText></RoundedButton>
       <View style={styles.inputContainer}><CustomInput
         autoFocus={true}
         autoCorrect={false}
@@ -42,7 +52,9 @@ export const LandingScreen = ({ navigation }) => {
         iconName="list"
         value={surveyCode}
         onChangeText={(surveyCode) => setSurveyCode(surveyCode)}
-      /></View>
+      />
+      </View>
+      <RoundedButton style={styles.search}><CustomText p1 lightBlue>search</CustomText></RoundedButton>
     </View>
   );
 };
