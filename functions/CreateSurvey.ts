@@ -20,6 +20,7 @@ export async function createSurvey(user: string, questions: any[], accessCode: s
         } = {
             creator: user,
             accessCode: accessCode,
+
         }
 
         let id = await db.collection("surveys").add({

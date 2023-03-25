@@ -30,7 +30,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
       paddingLeft: 15,
       paddingRight: 32,
       paddingVertical: 10,
-
+      minHeight: 50,
       borderColor: Colors.earth,
       borderWidth: 2,
     },
@@ -49,7 +49,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
         <Icon
           name={props.iconName}
           size={Font.p1.size}
-          color={props.iconColor ? props.iconColor : Colors.light}
+          color={props.iconColor ? props.iconColor : Colors.foreground}
           style={{
             marginRight: 10,
             //   backgroundColor: "#FF000030",
