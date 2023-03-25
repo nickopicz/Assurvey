@@ -15,6 +15,10 @@ export const HomeScreen = ({ navigation }) => {
     return (
         <View style={styles.container} >
             <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
+            
+            <Button style={{ backgroundColor: '#147EFB', padding: 10, borderRadius: 4}} onPress={() => {navigation.navigate("CreateSurvey")}}>
+                <Text style={{ color: '#fff' }}>Create</Text>
+            </Button>
         </View>
     )
 }
