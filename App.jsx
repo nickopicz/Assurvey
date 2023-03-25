@@ -32,19 +32,7 @@ export default function App() {
     });
   });
 
-  if (loggedIn === true) {
-    return (
-      <NavigationContainer>
-        <HomeStack />
-      </NavigationContainer>
-    )
-  } else if (loggedIn === false) {
-    return (
-      <NavigationContainer>
-        <AuthStack />
-      </NavigationContainer>
-    );
-  } else {
+  if (!fontsLoaded) {
     return (
       <View style={{
         backgroundColor: Colors.light,
@@ -57,6 +45,21 @@ export default function App() {
       </View>
     )
   }
+  if (loggedIn === true) {
+    return (
+      <NavigationContainer>
+        <HomeStack />
+      </NavigationContainer>
+    )
+  }
+  else if (loggedIn === false) {
+    return (
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
+    );
+  }
+
 
 }
 

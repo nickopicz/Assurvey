@@ -2,6 +2,7 @@ import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import CustomText from "../../components/common/Text";
 import { auth } from "../../firebase/firebase";
+import { RoundedButton } from "../../components/common/Button";
 
 export const HomeScreen = ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -14,11 +15,11 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container} >
-            <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
-            
-            <Button style={{ backgroundColor: '#147EFB', padding: 10, borderRadius: 4}} onPress={() => {navigation.navigate("CreateSurvey")}}>
-                <Text style={{ color: '#fff' }}>Create</Text>
-            </Button>
+            <CustomText h1 navbar>Welcome , </CustomText>
+
+            <RoundedButton>
+                <CustomText p2 white>Create</CustomText>
+            </RoundedButton>
         </View>
     )
 }
