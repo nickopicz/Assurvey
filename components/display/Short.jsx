@@ -12,7 +12,8 @@ export const ShortAnswer = ({ question, value, onChange, long }) => {
       borderColor: Colors.foreground,
       borderWidth: 2,
       width: "55%",
-      minHeight: 250
+      minHeight: 250,
+      marginVertical: 5
     },
     titleContainer: {
       alignItems: "center",
@@ -49,7 +50,7 @@ export const ShortAnswer = ({ question, value, onChange, long }) => {
         <CustomText p1 foreground>1</CustomText>
       </View>
       <View style={styles.titleContainer}>
-        <CustomText h3 contrast>
+        <CustomText h4 contrast>
           {question}
         </CustomText>
       </View>
