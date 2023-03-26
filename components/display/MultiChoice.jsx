@@ -64,6 +64,7 @@ export const MultipleChoice = ({ answers, question }) => {
 
     return (
       <FlatList
+        style={{ paddingVertical: 25 }}
         data={data}
         renderItem={({ item }) => (
           <RenderItem
@@ -87,7 +88,7 @@ export const MultipleChoice = ({ answers, question }) => {
         <CustomText p1 foreground>{1}</CustomText>
       </View>
       <View style={styles.titleContainer}>
-        <CustomText h4 contrast>
+        <CustomText h4 navbar>
           {question}
         </CustomText>
       </View>

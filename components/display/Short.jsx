@@ -50,7 +50,7 @@ export const ShortAnswer = ({ question, value, onChange, long }) => {
         <CustomText p1 foreground>1</CustomText>
       </View>
       <View style={styles.titleContainer}>
-        <CustomText h4 contrast>
+        <CustomText h4 navbar>
           {question}
         </CustomText>
       </View>

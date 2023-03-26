@@ -9,7 +9,9 @@ export const HomeStack = () => {
   return (
     <Stack.Navigator
       initialRouteName="Home"
-      screenOptions={{ header: () => <HomeHeader /> }}
+      screenOptions={{
+        header: ({ navigation }) => <HomeHeader navigation={navigation} />,
+      }}
     >
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Take" component={SurveyTaker} />
