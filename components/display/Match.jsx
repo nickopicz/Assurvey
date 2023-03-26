@@ -42,10 +42,15 @@ export const Matching = ({ question, answers }) => {
     })
 
     const [checked, setChecked] = useState("unchecked");
+    const [pressed, setPressed] = useState(false)
 
+    const RenderItem = ({ content, onPress, status, idx }) => {
+        const [choice, setChoice] = useState(answers)
+        const [choiceVal, setChoiceVal] = useState(null)
+        const [open, setOpen] = useState(false);
 
-    const RenderItem = ({ content, onPress, status }) => {
-
+        console.log("zIndex: ", answers.length - idx)
+        console.log("answers: ", answers)
 
         return (
             <View style={styles.answer}>
@@ -53,12 +58,21 @@ export const Matching = ({ question, answers }) => {
                 <CustomText p2 navbar>{content}</CustomText>
                 <DropDownPicker
                     style={{ alignSelf: "center" }}
+                    open={open}
+                    setOpen={setOpen}
+                    value={choiceVal}
+                    setValue={setChoiceVal}
+                    setItems={setChoice}
                     items={
-                        answers
+                        choice
                     }
+
+                    placeholder="Select answer"
                     defaultIndex={0}
                     containerStyle={{ height: 20, width: "50%" }}
                     onChangeItem={item => console.log(item.label, item.value)}
+                    zIndex={answers.length - idx}
+                    zIndexInverse={answers.lenght - idx}
                 />
 
             </View>
@@ -75,6 +89,7 @@ export const Matching = ({ question, answers }) => {
                 data={data}
                 renderItem={({ item }) => (
                     <RenderItem
+                        idx={item.id}
                         content={item.answer}
                         onPress={() => {
                             setChecked(item.id)

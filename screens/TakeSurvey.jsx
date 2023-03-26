@@ -29,6 +29,16 @@ export const SurveyTaker = () => {
 
     ]
 
+    const testMatch = [
+        { label: "hi", value: "hi" },
+        { label: "ok", value: "ok" },
+        { label: "low", value: "low" },
+        { label: "med", value: "med" },
+        { label: "k", value: "k" },
+        { label: "j", value: "j" },
+        { label: "z", value: "z" },
+    ]
+
     return (
         <View style={styles.container}>
             <ShortAnswer
@@ -43,7 +53,7 @@ export const SurveyTaker = () => {
             />
             <Matching
                 question={"Match these? "}
-                answers={testMC}
+                answers={testMatch}
             />
         </View>
     )
