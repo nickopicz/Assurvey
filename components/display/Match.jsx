@@ -22,8 +22,8 @@ export const Matching = ({ question, answers, questionSet, size }) => {
             justifyContent: "center",
             position: "absolute",
             width: "100%",
-            minHeight: "15%",
-            marginTop: 35,
+            // minHeight: "15%",
+            top: 20,
             paddingHorizontal: 10,
             zIndex: -1
         },
@@ -36,7 +36,7 @@ export const Matching = ({ question, answers, questionSet, size }) => {
         },
         answer: {
             flexDirection: "row",
-            alignItems: "center",
+            alignItems: "flex-start",
             justifyContent: "space-between",
             minHeight: 100,
             paddingVertical: 10,
@@ -60,13 +60,16 @@ export const Matching = ({ question, answers, questionSet, size }) => {
 
         return (
             <View
-                style={styles.answer}
+                style={[styles.answer, { minHeight: open === true ? 40 * answers.length : 100 }]}
                 zIndex={(size - idx)}
             >
 
-                <CustomText p2 navbar style={{ paddingRight: 5 }}>{content}</CustomText>
+                <View style={{ width: "50%" }}>
+                    <CustomText p2 navbar style={{ paddingRight: 5 }}>{content}</CustomText>
+                </View>
                 <DropDownPicker
                     stickyHeader={true}
+                    dropDownDirection={"down"}
                     open={open}
                     setOpen={setOpen}
                     value={choiceVal}
@@ -75,7 +78,7 @@ export const Matching = ({ question, answers, questionSet, size }) => {
                     items={choice}
                     placeholder="Select answer"
                     defaultIndex={0}
-                    containerStyle={{ height: 20, width: "50%", alignSelf: "center" }}
+                    containerStyle={{ height: 20, width: "50%", zIndex: 2000 }}
                     onChangeItem={item => console.log(item.label, item.value)}
                 />
 
