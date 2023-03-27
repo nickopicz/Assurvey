@@ -21,7 +21,8 @@ import { Colors, Font } from "../../Constants";
   
   Uppercase: use u prop
 
-  Example: <Text h3 red u>MAIN</Text> will display MAIN in 28 pt font colored red
+  Example: <CustomText h3 red u>MAIN</CustomText> 
+  will display MAIN in 28 pt font colored red
 
   RN Text props (see RN docs):
     numberOfLines (number)

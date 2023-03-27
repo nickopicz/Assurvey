@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
+import { RoundedButton } from "../components/common/Button";
+import CustomText from "../components/common/Text";
 import { Matching } from "../components/display/Match";
 import { MultipleChoice } from "../components/display/MultiChoice";
 import { ShortAnswer } from "../components/display/Short"
@@ -14,6 +16,14 @@ export const SurveyTaker = () => {
             alignItems: "center",
             width: "100%",
             backgroundColor: Colors.blueWhite
+        },
+        completeButton: {
+            marginVertical: 35,
+            marginBottom: 40,
+            backgroundColor: Colors.confirm,
+            borderColor: Colors.navbar,
+            borderWidth: 2,
+            width: 200,
         }
     })
 
@@ -69,6 +79,14 @@ export const SurveyTaker = () => {
                 size={matchTestQ.length}
 
             />
+            <RoundedButton
+                medium
+                style={styles.completeButton}
+            >
+                <CustomText p1 navbar>
+                    Finish
+                </CustomText>
+            </RoundedButton>
         </View>
     )
 }

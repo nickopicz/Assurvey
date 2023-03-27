@@ -37,6 +37,11 @@ export const MultipleChoice = ({ answers, question }) => {
       alignItems: "center",
       justifyContent: "flex-start"
 
+    },
+    list: {
+      paddingVertical: 25,
+      marginBottom: 20,
+      paddingLeft: 20
     }
   })
 
@@ -66,7 +71,7 @@ export const MultipleChoice = ({ answers, question }) => {
 
     return (
       <FlatList
-        style={{ paddingVertical: 25 }}
+        style={styles.list}
         data={data}
         renderItem={({ item }) => (
           <RenderItem

@@ -13,9 +13,8 @@ export const HomeScreen = ({ navigation }) => {
             height: "100%"
         },
         takeButton: {
-            height: 50,
             borderWidth: 2,
-            borderColor: Colors.navbar
+            borderColor: Colors.foreground,
 
         }
     })
@@ -25,6 +24,7 @@ export const HomeScreen = ({ navigation }) => {
             <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
             <View>
                 <RoundedButton
+                    large
                     onPress={() => navigation.navigate("Take")}
                     style={styles.takeButton}
                 >
