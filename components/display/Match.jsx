@@ -43,6 +43,7 @@ export const Matching = ({ question, answers }) => {
 
     const [checked, setChecked] = useState("unchecked");
     const [pressed, setPressed] = useState(false)
+    const [idx, setIdx] = useState()
 
     const RenderItem = ({ content, onPress, status, idx }) => {
         const [choice, setChoice] = useState(answers)
@@ -66,13 +67,17 @@ export const Matching = ({ question, answers }) => {
                     items={
                         choice
                     }
-
+                    onOpen={() => {
+                        setIdx(idx);
+                        console.log("setting index")
+                    }}
                     placeholder="Select answer"
                     defaultIndex={0}
                     containerStyle={{ height: 20, width: "50%" }}
                     onChangeItem={item => console.log(item.label, item.value)}
-                    zIndex={answers.length - idx}
-                    zIndexInverse={answers.lenght - idx}
+                    zIndex={5}
+
+                // zIndexInverse={answers.lenght - idx}
                 />
 
             </View>
