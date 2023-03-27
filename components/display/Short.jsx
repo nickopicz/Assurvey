@@ -13,7 +13,8 @@ export const ShortAnswer = ({ question, value, onChange, long }) => {
       borderWidth: 2,
       width: "55%",
       minHeight: 250,
-      marginVertical: 5
+      marginVertical: 5,
+      backgroundColor: Colors.white
     },
     titleContainer: {
       alignItems: "center",

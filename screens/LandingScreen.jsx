@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomInput } from "../components/common/Input";
 import { RoundedButton } from "../components/common/Button";
 import { View, StyleSheet } from "react-native";
@@ -40,6 +40,10 @@ export const LandingScreen = ({ navigation }) => {
 
   const [surveyCode, setSurveyCode] = useState("")
 
+
+  useEffect(() => {
+    console.log("hello from landing page")
+  })
   return (
     <View style={styles.container}>
       <RoundedButton style={styles.button} onPress={() => {

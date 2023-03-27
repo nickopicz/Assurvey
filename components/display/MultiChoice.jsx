@@ -14,6 +14,8 @@ export const MultipleChoice = ({ answers, question }) => {
       width: "55%",
       minHeight: 250,
       marginVertical: 5,
+      backgroundColor: Colors.white
+
     },
     titleContainer: {
       alignItems: "center",

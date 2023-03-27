@@ -39,6 +39,17 @@ export const SurveyTaker = () => {
         { label: "z", value: "z" },
     ]
 
+    const matchTestQ = [
+        { id: 0, question: "hi sdf dsf sdf sdf sdf sdf sdf sdf  asd asd asd asd asd asd assdf?" },
+        { id: 1, question: "bye?" },
+        { id: 2, question: "never?" },
+        { id: 3, question: "dang?" },
+        { id: 4, question: "ok?" },
+        { id: 5, question: "rsdf sdf sdf sdf sssssssssssssssssssssssssssssssssss sssss asd as  sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf dsage?" },
+        { id: 6, question: "name?" },
+    ]
+
+
     return (
         <View style={styles.container}>
             <ShortAnswer
@@ -54,6 +65,9 @@ export const SurveyTaker = () => {
             <Matching
                 question={"Match these? "}
                 answers={testMatch}
+                questionSet={matchTestQ}
+                size={matchTestQ.length}
+
             />
         </View>
     )

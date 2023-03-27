@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet, FlatList, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import { RoundedButton } from "../common/Button";
 import { RadioButton } from "react-native-paper";
 import CustomText from "../common/Text";
 import { Colors } from "../../Constants";
 import DropDownPicker from "react-native-dropdown-picker";
-export const Matching = ({ question, answers }) => {
+export const Matching = ({ question, answers, questionSet, size }) => {
 
     const styles = StyleSheet.create({
         container: {
@@ -15,14 +15,17 @@ export const Matching = ({ question, answers }) => {
             width: "55%",
             minHeight: 250,
             marginVertical: 5,
+            backgroundColor: Colors.white
         },
         titleContainer: {
             alignItems: "center",
             justifyContent: "center",
+            position: "absolute",
             width: "100%",
             minHeight: "15%",
             marginTop: 35,
-            paddingHorizontal: 10
+            paddingHorizontal: 10,
+            zIndex: -1
         },
 
         num: {
@@ -34,50 +37,46 @@ export const Matching = ({ question, answers }) => {
         answer: {
             flexDirection: "row",
             alignItems: "center",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
             minHeight: 100,
-            paddingVertical: 10
-
+            paddingVertical: 10,
+            borderTopColor: Colors.navbar,
+            borderTopWidth: 1
         }
     })
 
     const [checked, setChecked] = useState("unchecked");
     const [pressed, setPressed] = useState(false)
-    const [idx, setIdx] = useState()
+    const [zindex, setzIndex] = useState(1000)
 
     const RenderItem = ({ content, onPress, status, idx }) => {
         const [choice, setChoice] = useState(answers)
         const [choiceVal, setChoiceVal] = useState(null)
         const [open, setOpen] = useState(false);
+        const [selected, setSelected] = useState(false); // state variable to toggle the zIndex value
 
         console.log("zIndex: ", answers.length - idx)
         console.log("answers: ", answers)
 
         return (
-            <View style={styles.answer}>
+            <View
+                style={styles.answer}
+                zIndex={(size - idx)}
+            >
 
-                <CustomText p2 navbar>{content}</CustomText>
+                <CustomText p2 navbar style={{ paddingRight: 5 }}>{content}</CustomText>
                 <DropDownPicker
-                    style={{ alignSelf: "center" }}
+                    stickyHeader={true}
                     open={open}
                     setOpen={setOpen}
                     value={choiceVal}
                     setValue={setChoiceVal}
                     setItems={setChoice}
-                    items={
-                        choice
-                    }
-                    onOpen={() => {
-                        setIdx(idx);
-                        console.log("setting index")
-                    }}
+                    items={choice}
                     placeholder="Select answer"
                     defaultIndex={0}
-                    containerStyle={{ height: 20, width: "50%" }}
+                    containerStyle={{ height: 20, width: "50%", alignSelf: "center" }}
                     onChangeItem={item => console.log(item.label, item.value)}
-                    zIndex={5}
-
-                // zIndexInverse={answers.lenght - idx}
                 />
 
             </View>
@@ -90,12 +89,12 @@ export const Matching = ({ question, answers }) => {
 
         return (
             <FlatList
-                style={{ paddingVertical: 25 }}
-                data={data}
+                style={{ paddingVertical: 25, paddingTop: 120, width: "90%", alignSelf: "center" }}
+                data={questionSet}
                 renderItem={({ item }) => (
                     <RenderItem
                         idx={item.id}
-                        content={item.answer}
+                        content={item.question}
                         onPress={() => {
                             setChecked(item.id)
                         }
@@ -114,12 +113,13 @@ export const Matching = ({ question, answers }) => {
             <View style={styles.num}>
                 <CustomText p1 foreground>{1}</CustomText>
             </View>
+
+            <NewFlatList data={answers} />
             <View style={styles.titleContainer}>
                 <CustomText h4 navbar>
                     {question}
                 </CustomText>
             </View>
-            <NewFlatList data={answers} />
         </View>
     );
 }
