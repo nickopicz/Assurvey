@@ -17,20 +17,52 @@ import { CreateAccountScreen } from "./screens/auth/CreateAccount";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return(
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Test">
-        <Stack.Screen name="Test" component={Test} options={{title: 'Welcome'}}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  let [fontsLoaded] = useFonts({
+    "OverPass-Regular": require("./assets/font/Overpass-Regular.ttf"),
+  });
+  const [loggedIn, setLoggedIn] = useState()
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function (user) {
+      try {
+        if (user) {
+          setLoggedIn(true);
+        } else {
+          setLoggedIn(false);
+        }
+      } catch (error) {
+        console.error(error);
+        setLoggedIn(false)
+      }
+    });
+  });
+
+  if (loggedIn === true) {
+    return (
+      <NavigationContainer>
+        <HomeStack />
+      </NavigationContainer>
+    )
+  } else if (loggedIn === false) {
+    return (
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
+    );
+  } else {
+    return (
+      <View style={{
+        backgroundColor: Colors.light,
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        <CustomText h1 navbar>Loading ... </CustomText>
+      </View>
+    )
+  }
+
 }
 
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});*/
+

@@ -18,11 +18,11 @@ import Text from "./Text";
 export const RoundedButton = React.forwardRef((props, ref) => {
   let width = undefined;
   if (props.small) {
-    width = Dim.width * 0.4;
+    width = 100;
   } else if (props.medium) {
-    width = Dim.width * 0.6;
+    width = 150;
   } else if (props.large) {
-    width = Dim.width * 0.8;
+    width = 200;
   }
   return (
     <TouchableOpacity
@@ -41,7 +41,7 @@ export const RoundedButton = React.forwardRef((props, ref) => {
         justifyContent: "center",
         paddingHorizontal: 10,
         paddingVertical: 7.5,
-        borderRadius: 18,
+        borderRadius: 15,
         ...props.style,
       }}
     >

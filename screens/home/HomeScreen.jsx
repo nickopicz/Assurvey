@@ -8,33 +8,13 @@ const HomeScreen = ({ navigation }) => {
         container: {
             flex: 1,
             justifyContent: "center",
-            alignItems: "center",
-            marginTop: 10,
-        },
-
-        input: {
-            height: 60,
-            width: 1000,
-            borderWidth: 1,
-            padding: 10,
-            margin: 10,
+            height: "100%"
         }
     })
 
     return (
-        <View style={{flex: 1}}>
-            <View>
-                <Navbar navigation={navigation}/>
-            </View>
-            <View style={styles.container}>
-                <Text>Welcome To ASurvey</Text>
-                <TextInput
-                style={styles.input}
-                placeholder="Type A Survey Code Here..."
-                />
-                <Button
-                title="Find Survey"/>
-            </View>
+        <View style={styles.container} >
+            <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
         </View>
     )
 }
