@@ -1,10 +1,11 @@
-import { View } from "react-native"
+import { View, Text } from "react-native"
 
-
-export const NewQuestion = () => {
+const NewQuestion = () => {
     return (
         <View>
-
+            <Text>Hello World</Text>
         </View>
     )
 }
+
+export default NewQuestion;
