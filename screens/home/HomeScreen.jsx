@@ -4,6 +4,7 @@ import { RoundedButton } from "../../components/common/Button";
 import CustomText from "../../components/common/Text";
 import { Colors } from "../../Constants";
 import { auth } from "../../firebase/firebase";
+import { RoundedButton } from "../../components/common/Button";
 
 export const HomeScreen = ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -21,6 +22,7 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container} >
+<<<<<<< HEAD
             <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
             <View>
                 <RoundedButton
@@ -31,6 +33,13 @@ export const HomeScreen = ({ navigation }) => {
                     <CustomText p2 white style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
                 </RoundedButton>
             </View>
+=======
+            <CustomText h1 navbar>Welcome , </CustomText>
+
+            <RoundedButton>
+                <CustomText p2 white>Create</CustomText>
+            </RoundedButton>
+>>>>>>> 65cd60b89c21b2a6f240ac6035522116e5351882
         </View>
     )
 }
