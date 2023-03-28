@@ -6,7 +6,7 @@ export const Colors = {
   navbar: "#393E46",
   contrast: "#6495ED",
   light: "#ADD8E6",
-  white: "#E0FFFF",
+  white: "#FFFFFF",
   record: "#DA8F81",
   earth: "#9d847e",
   blueWhite: "#dff5fb",
