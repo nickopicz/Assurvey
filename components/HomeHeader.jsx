@@ -17,13 +17,11 @@ export const HomeHeader = ({ navigation }) => {
             alignSelf: "center",
             bottom: 0,
         },
-
         backButton: {
             marginTop: 10,
             marginLeft: 10,
             width: 30
         }
-
     })
     return (
         <View style={styles.container}>

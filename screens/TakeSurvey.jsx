@@ -9,6 +9,7 @@ import { Colors } from "../Constants";
 
 
 export const SurveyTaker = () => {
+
     const [input, setInput] = useState("")
 
     const styles = StyleSheet.create({
