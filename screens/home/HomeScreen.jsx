@@ -15,7 +15,14 @@ export const HomeScreen = ({ navigation }) => {
         takeButton: {
             borderWidth: 2,
             borderColor: Colors.foreground,
+            marginVertical: 20,
 
+
+        },
+        createButton: {
+            backgroundColor: Colors.confirm,
+            borderWidth: 2,
+            marginVertical: 20,
         }
     })
 
@@ -25,12 +32,20 @@ export const HomeScreen = ({ navigation }) => {
             <View>
                 <RoundedButton
                     large
+                    onPress={() => navigation.navigate("Create")}
+                    style={styles.createButton}
+                >
+                    <CustomText p2 white style={{ paddingHorizontal: 10 }}>Create Survey</CustomText>
+                </RoundedButton>
+                <RoundedButton
+                    large
                     onPress={() => navigation.navigate("Take")}
                     style={styles.takeButton}
                 >
                     <CustomText p2 white style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
                 </RoundedButton>
+
             </View>
-        </View >
+        </View>
     )
 }

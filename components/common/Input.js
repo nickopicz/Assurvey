@@ -10,68 +10,84 @@ import { Feather as Icon } from "@expo/vector-icons";
  * @props . . . children
  *
  */
-export const CustomInput = React.forwardRef((props, ref) => {
-  let width = undefined;
-  if (props.small) {
-    width = "40%";
-  } else if (props.medium) {
-    width = "60%";
-  } else if (props.large) {
-    width = "80%";
-  }
-  const styles = StyleSheet.create({
-    container: {
-      width: width,
-      flexDirection: "row",
-      backgroundColor: Colors.light,
-      borderRadius: 23,
-      margin: 12,
-      alignItems: "center",
-      paddingLeft: 15,
-      paddingRight: 32,
-      paddingVertical: 10,
-      minHeight: 50,
-      borderColor: Colors.earth,
-      borderWidth: 2,
+export const CustomInput = React.forwardRef(
+  (
+    {
+      containerStyle,
+      small,
+      medium,
+      large,
+      iconName,
+      iconColor,
+      placeholder,
+      placeholderColor,
+      style,
+      textColor,
+      children,
     },
-    input: {
-      // backgroundColor: "#00FF0030",
-      fontSize: Font.p2.size,
-      flex: 1,
-      // paddingVertical: 10,
-      // fontFamily: "LilitaOne_400Regular",
-    },
-  });
+    ref
+  ) => {
+    let width = undefined;
+    if (small) {
+      width = "40%";
+    } else if (medium) {
+      width = "60%";
+    } else if (large) {
+      width = "80%";
+    }
+    const styles = StyleSheet.create({
+      container: {
+        width: width,
+        flexDirection: "row",
+        backgroundColor: Colors.white,
+        borderRadius: 23,
+        margin: 12,
+        alignItems: "center",
+        paddingLeft: 15,
+        paddingRight: 32,
+        paddingVertical: 10,
+        minHeight: 50,
+        borderColor: Colors.light,
+        borderWidth: 2,
+      },
+      input: {
+        // backgroundColor: "#00FF0030",
+        fontSize: Font.p2.size,
+        flex: 1,
+        // paddingVertical: 10,
+        // fontFamily: "LilitaOne_400Regular",
+      },
+    });
 
-  return (
-    <View style={[styles.container, props.containerStyle]}>
-      {props.iconName ? (
-        <Icon
-          name={props.iconName}
-          size={Font.p1.size}
-          color={props.iconColor ? props.iconColor : Colors.foreground}
+    return (
+      <View style={[styles.container, containerStyle]}>
+        {iconName ? (
+          <Icon
+            name={iconName}
+            size={Font.p1.size}
+            color={iconColor ? iconColor : Colors.foreground}
+            style={{
+              marginRight: 10,
+              //   backgroundColor: "#FF000030",
+            }}
+          />
+        ) : null}
+
+        <TextInput
+          placeholderTextColor={
+            placeholderColor ? placeholderColor : Colors.navbar
+          }
+          placeholder={placeholder}
           style={{
-            marginRight: 10,
-            //   backgroundColor: "#FF000030",
+            ...styles.input,
+            ...style,
+            color: textColor ? textColor : Colors.foreground,
           }}
-        />
-      ) : null}
-
-      <TextInput
-        placeholderTextColor={
-          props.placeholderColor ? props.placeholderColor : Colors.navbar
-        }
-        on
-        style={{
-          ...styles.input,
-          ...props.style,
-          color: props.textColor ? props.textColor : Colors.foreground,
-        }}
-        ref={ref}
-        {...props}
-      >
-        {props.children}
-      </TextInput>
-    </View>
-  );
-});
+          ref={ref}
+        >
+          {children}
+        </TextInput>
+      </View>
+    );
+  }
+);
