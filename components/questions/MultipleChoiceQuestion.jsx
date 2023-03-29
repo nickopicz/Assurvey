@@ -1,7 +1,7 @@
 import { View, StyleSheet } from "react-native"
 import { useState } from "react";
 import { CustomInput } from "../common/Input";
-
+import { Colors } from "../../Constants";
 export const MultipleChoiceQuestion = ({ type, editable }) => {
     //when setting state it should look something like this, keep consistent
     //variable names when setting state. Just try to model most of your code
