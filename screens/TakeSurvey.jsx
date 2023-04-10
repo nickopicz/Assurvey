@@ -6,7 +6,7 @@ import { Matching } from "../components/display/Match";
 import { MultipleChoice } from "../components/display/MultiChoice";
 import { ShortAnswer } from "../components/display/Short"
 import { Colors } from "../Constants";
-import { db } from "../../firebase/firebase.js";
+//import { db } from "../../firebase/firebase.js";
 
 export const TakeSurvey = ({props}) => {
 
