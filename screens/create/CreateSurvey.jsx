@@ -3,77 +3,54 @@ import {View, Text, Button, TextInput, StyleSheet} from "react-native";
 import { db } from "../../firebase/firebase.js";
 import { useState } from "react";
 
-export const CreateSurvey = ({navigation}) => {
-    const [title, setTitle] = useState('');
-    const [author, setAuthor] = useState('');
-    const [id, setId] = useState(0);
-    const [questions, setQuestions] = useState([]);
-    const [isGraded, setIsGraded] = useState(true);
+import { RoundedButton } from "../../components/common/Button";
+import { CustomInput } from "../../components/common/Input";
+import { View, StyleSheet } from "react-native";
+import { Colors } from "../../Constants";
+import { AntDesign } from "@expo/vector-icons";
 
-    const handleSubmit = () => {
-        db.collection("surveys").add({
-            id: Number.parseInt(id),
-            title: title,
-            author: author,
-            isGraded: false,
-            questions: questions,
-        });
-    }
 
-    return(
+export const CreateScreen = ({ navigation }) => {
+    const styles = StyleSheet.create({
+        container: {
+            alignItems: "center"
+        },
+        codeContainer: {
+            width: "100%",
+            height: 150,
+            alignItems: "center",
+        },
+        addButton: {
+            width: "50%",
+            alignSelf: "center"
+        }
+    })
+
+    const [title, setTitle] = useState("");
+    const [code, setCode] = useState("");
+
+    return (
         <View>
-            <Text>Title: </Text>
-            <TextInput
-                onChangeText={(text) => setTitle(text)}
-                placeholder="Title..."/>
-            
-            <Text>Author: </Text>
-            <TextInput
-                onChangeText={(text) => setAuthor(text)}
-                placeholder="Author..."/>
-            
-            <Text>Code: </Text>
-            <TextInput
-                onChangeText={(text) => setId(text)}
-                placeholder="Unique Code..."/>
-            
-            <View style={{flexDirection: "row"}}>
-                <Button
-                    title="Add New Multiple Choice Question"
-                    onPress={() => questions.push( 
-                        {
-                            questionText: "Multiple Choice Question",
-                            answerChoices: ["True", "False"],
-                            correctAnswer: "True",
-                            pointValue: 0
-                        })}/>
-                
-                <Button
-                    title="Add New Essay/Short Response Question"
-                    onPress={() => questions.push( 
-                        {
-                            questionText: "Essay/Short Response Question",
-                            answerChoices: [null],
-                            correctAnswer: null,
-                            pointValue: 0
-                        })}/>
-                
-                <Button
-                    title="Add New Matching Question"
-                    onPress={() => questions.push( 
-                        {
-                            questionText: "Matching Question",
-                            answerChoices: [{"Left": "Right"}],
-                            correctAnswer: {"Left": "Right"},
-                            pointValue: 0
-                        })}/>
+            <View style={styles.codeContainer}>
+                <CustomInput small
+                    placeholder="Survey Title"
+                    autoFocus={true}
+                    iconName="book"
+                    value={title}
+                    onChangeText={(title) => setTitle(title)}
+                />
+                <CustomInput small
+                    placeholder="Custom Access Code"
+                    iconName="code"
+                    value={code}
+                    onChangeText={(code) => setCode(code)}
+                />
             </View>
-            
-            <Button
-                title="Upload Survey"
-                onPress={handleSubmit}/>
+            <RoundedButton style={styles.addButton}>
+                <AntDesign name="plus" size={50} />
+            </RoundedButton>
         </View>
-    );
+    )
 }
 
 export default CreateSurvey;

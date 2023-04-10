@@ -41,13 +41,13 @@ export const TakeSurvey = ({props}) => {
     ]
 
     const testMatch = [
-        { label: "hi", value: "hi" },
-        { label: "ok", value: "ok" },
-        { label: "low", value: "low" },
-        { label: "med", value: "med" },
-        { label: "k", value: "k" },
-        { label: "j", value: "j" },
-        { label: "z", value: "z" },
+        { label: "hi", value: 0 },
+        { label: "ok", value: 1 },
+        { label: "low", value: 2 },
+        { label: "med", value: 3 },
+        { label: "k", value: 4 },
+        { label: "j", value: 5 },
+        { label: "z", value: 6 },
     ]
 
     const matchTestQ = [
@@ -78,7 +78,6 @@ export const TakeSurvey = ({props}) => {
                 answers={testMatch}
                 questionSet={matchTestQ}
                 size={matchTestQ.length}
-
             />
             <RoundedButton
                 medium
