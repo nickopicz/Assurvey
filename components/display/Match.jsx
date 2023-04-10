@@ -49,7 +49,13 @@ export const Matching = ({ question, answers, questionSet, size }) => {
     const [pressed, setPressed] = useState(false)
     const [zindex, setzIndex] = useState(1000)
 
-    const RenderItem = ({ content, onPress, status, idx }) => {
+    /**
+     * 
+     * @param {*} content the title of an child matching question
+     * @param {*} onPress
+     * @returns 
+     */
+    const RenderItem = ({ content, idx }) => {
         const [choice, setChoice] = useState(answers)
         const [choiceVal, setChoiceVal] = useState(null)
         const [open, setOpen] = useState(false);
