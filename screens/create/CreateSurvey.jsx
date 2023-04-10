@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 
 import { RoundedButton } from "../../components/common/Button";
 import { CustomInput } from "../../components/common/Input";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, FlatList } from "react-native";
 import { Colors } from "../../Constants";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
+import { CreateMatching } from "../../components/questions/NewMatching";
 
 
 export const CreateScreen = ({ navigation }) => {
     const styles = StyleSheet.create({
         container: {
             alignItems: "center",
+            flex: 1,
+            backgroundColor: Colors.blueWhite
         },
         codeContainer: {
             width: "100%",
@@ -34,6 +37,8 @@ export const CreateScreen = ({ navigation }) => {
         }
     })
 
+    const [DATA, setDATA] = useState([])
+
     const questionTypes = [
         { label: "Multiple Choice", value: "Multiple Choice" },
         { label: "Open Ended ", value: "Open Ended" },
@@ -46,12 +51,13 @@ export const CreateScreen = ({ navigation }) => {
     const [choice, setChoice] = useState(questionTypes)
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
-    const [selected, setSelected] = useState(false);
 
 
     useEffect(() => {
         console.log(open)
+        console.log("Data: ", DATA)
     })
+
     return (
         <View style={styles.container}>
             <View style={styles.codeContainer}>
@@ -69,6 +75,13 @@ export const CreateScreen = ({ navigation }) => {
                     onChangeText={(code) => setCode(code)}
                 />
             </View>
+            <FlatList
+                style={{ width: "60%", height: 300 + DATA.length * 300 }}
+                data={DATA}
+                renderItem={(item) => (
+                    <CreateMatching />
+                )}
+            />
             <View style={styles.addContainer}>
                 <View style={{
                     minHeight: open === true ? 200 : 60,
@@ -92,10 +105,16 @@ export const CreateScreen = ({ navigation }) => {
                             onChangeItem={item => console.log(item.label, item.value)} /> : null}
                 </View>
                 <RoundedButton style={styles.addButton} onPress={() => {
-                    setPressed(true)
-
+                    setPressed(!pressed);
+                    if (pressed === true) {
+                        let temp = DATA;
+                        console.log("type: ", choiceVal)
+                        temp.push({
+                            type: choiceVal,
+                        })
+                        setDATA(temp)
+                    }
                 }}
-                    disabled={pressed}
                 >
                     <AntDesign name="plus" size={50} />
 
