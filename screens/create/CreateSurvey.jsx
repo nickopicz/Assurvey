@@ -13,7 +13,6 @@ export const CreateScreen = ({ navigation }) => {
     const styles = StyleSheet.create({
         container: {
             alignItems: "center",
-            flex: 1,
             backgroundColor: Colors.blueWhite
         },
         codeContainer: {
@@ -75,16 +74,18 @@ export const CreateScreen = ({ navigation }) => {
                     onChangeText={(code) => setCode(code)}
                 />
             </View>
-            <FlatList
-                style={{ width: "60%", height: 300 + DATA.length * 300 }}
-                data={DATA}
-                renderItem={(item) => (
-                    <CreateMatching />
-                )}
-            />
+            <View style={{ minHeight: 300 + DATA.length * 100, width: "100%", alignItems: "center" }}>
+                <FlatList
+                    scrollEnabled={false}
+                    style={{ width: "60%" }}
+                    data={DATA}
+                    renderItem={(item) => (
+                        <CreateMatching />
+                    )}
+                /></View>
             <View style={styles.addContainer}>
                 <View style={{
-                    minHeight: open === true ? 200 : 60,
+                    minHeight: open === true ? 200 : 50,
                     marginVertical: 10,
                     justifyContent: "flex-start"
                 }}>

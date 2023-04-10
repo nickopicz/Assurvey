@@ -7,7 +7,7 @@ import { CustomInput } from "../common/Input";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const CreateMatching = () => {
+export const CreateMatching = ({ questionSetter, answerSetter }) => {
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
 
@@ -16,7 +16,7 @@ export const CreateMatching = () => {
             width: "100%",
             backgroundColor: Colors.white,
             marginVertical: 5,
-            height: 150 + DATA.length * 100,
+            minHeight: 150 + DATA.length * 100,
             justifyContent: "flex-start"
 
         },
@@ -42,6 +42,51 @@ export const CreateMatching = () => {
         }
     })
 
+    const [questions, setQuestions] = useState([]);
+    const [answers, setAnswers] = useState([]);
+
+    function addQuestion(el) {
+        setQuestions([...questions, el]);
+    }
+
+    function removeQuestion(index) {
+        const newItems = [...questions];
+        newItems.splice(index, 1);
+        setQuestions(newItems);
+
+    }
+
+    function addAnswer(answer) {
+        setAnswers([...answers, answer])
+    }
+
+    function removeAnswer(index) {
+        const newItems = [...answers];
+        newItems.splice(index, 1);
+        setAnswers(newItems);
+
+    }
+
+    function onPress(question, answer) {
+        let temp = DATA;
+
+        for (let i = 0; i < temp.length; i++) {
+            temp[i].id = i;
+            if (temp[i].id === item.id) {
+                temp[i].question = question;
+                temp[i].answer = answer;
+            }
+        }
+        console.log("matching dataL: ", temp)
+        setDATA(temp)
+
+    }
+
+    function handleRemove(idx) {
+        const newItems = [...DATA];
+        newItems.splice(idx, 1);
+        setDATA(newItems);
+    }
 
     useEffect(() => {
         console.log("data from question : ", DATA)
@@ -51,19 +96,7 @@ export const CreateMatching = () => {
         const [question, setQuestion] = useState("");
         const [answer, setAnswer] = useState("");
 
-        function onPress() {
-            let temp = DATA;
 
-            for (let i = 0; i < temp.length; i++) {
-                temp[i].id = i;
-                if (temp[i].id === item.id) {
-                    temp[i].question = question;
-                    temp[i].answer = answer;
-                }
-            }
-            setDATA(temp)
-
-        }
 
         return (
             <View style={styles.answerContainer}>
@@ -83,8 +116,11 @@ export const CreateMatching = () => {
                     iconName="clipboard"
                     autoCorrect={false}
                 />
-                <TouchableOpacity onPress={() => onPress()}>
+                <TouchableOpacity onPress={() => { onPress(question, answer); addQuestion(question); addAnswer(answer) }}>
                     <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => { removeQuestion(item.id); removeAnswer(item.id); handleRemove(item.id) }}>
+                    <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
                 </TouchableOpacity>
             </View>
         )
@@ -104,7 +140,7 @@ export const CreateMatching = () => {
             <FlatList
                 data={DATA}
                 renderItem={(item) => (
-                    <RenderItem />
+                    <RenderItem onPress={onPress} />
                 )}
             />
             <RoundedButton
