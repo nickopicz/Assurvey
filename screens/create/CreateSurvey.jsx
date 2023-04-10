@@ -7,6 +7,7 @@ import { Colors } from "../../Constants";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { CreateMatching } from "../../components/questions/NewMatching";
+import { CreateMC } from "../../components/questions/MultipleChoiceQuestion";
 
 
 export const CreateScreen = ({ navigation }) => {
@@ -39,9 +40,9 @@ export const CreateScreen = ({ navigation }) => {
     const [DATA, setDATA] = useState([])
 
     const questionTypes = [
-        { label: "Multiple Choice", value: "Multiple Choice" },
-        { label: "Open Ended ", value: "Open Ended" },
-        { label: "Matching", value: "Matching" },
+        { label: "Multiple Choice", value: 0 },
+        { label: "Open Ended", value: 1 },
+        { label: "Matching", value: 2 },
     ]
 
     const [title, setTitle] = useState("");
@@ -57,6 +58,24 @@ export const CreateScreen = ({ navigation }) => {
         console.log("Data: ", DATA)
     })
 
+
+    const QuestionType = ({ item }) => {
+        useEffect(() => {
+            console.log("type within questionm: ", item)
+        })
+        if (item.item.type === 0) {
+            return <CreateMC />
+        }
+        if (item.item.type === 1) {
+            return null
+        }
+
+        if (item.item.type === 2) {
+            return <CreateMatching />
+
+        }
+
+    }
     return (
         <View style={styles.container}>
             <View style={styles.codeContainer}>
@@ -80,7 +99,7 @@ export const CreateScreen = ({ navigation }) => {
                     style={{ width: "60%" }}
                     data={DATA}
                     renderItem={(item) => (
-                        <CreateMatching />
+                        <QuestionType item={item} />
                     )}
                 /></View>
             <View style={styles.addContainer}>
@@ -107,7 +126,7 @@ export const CreateScreen = ({ navigation }) => {
                 </View>
                 <RoundedButton style={styles.addButton} onPress={() => {
                     setPressed(!pressed);
-                    if (pressed === true) {
+                    if (pressed === true && choiceVal !== null) {
                         let temp = DATA;
                         console.log("type: ", choiceVal)
                         temp.push({
