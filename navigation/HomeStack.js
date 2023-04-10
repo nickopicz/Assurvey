@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { HomeHeader } from "../components/HomeHeader";
-import { CreateScreen } from "../screens/create/CreateSurvey";
+import { CreateScreen } from "../screens/create/CreateScreen";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { SurveyTaker } from "../screens/TakeSurvey";
 
