@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Colors } from "../../Constants";
 import { CustomInput } from "../../components/common/Input";
 import { RoundedButton } from "../../components/common/Button";
@@ -50,6 +50,11 @@ export const CreateAccountScreen = ({
     })
   }
 
+  useEffect(() => {
+    console.log("email: ", email, " \n")
+    console.log("pass: ", password)
+  }, [password, email])
+
   return (
     <View style={styles.container}>
       <View style={styles.inputContainer}>
@@ -72,7 +77,7 @@ export const CreateAccountScreen = ({
         />
       </View>
       <View style={styles.buttonContainer}>
-        <RoundedButton disabled={!email || !password} style={styles.button} onPress={() => {
+        <RoundedButton disabled={email.length === 0 || password.length === 0} style={styles.button} onPress={() => {
           handlePress()
         }}>continue</RoundedButton>
       </View>
