@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import CustomText from "../common/Text";
 import { RoundedButton } from "../common/Button";
@@ -7,10 +7,17 @@ import { CustomInput } from "../common/Input";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const CreateMatching = ({ onPress }) => {
+export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
+
+
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
     const [itemStates, setItemStates] = useState({});
+    const [answers, setAnswers] = useState([])
+    const [questions, setQuestions] = useState([])
+    const [points, setPoints] = useState(0)
+
+
 
     const styles = StyleSheet.create({
         container: {
@@ -30,7 +37,7 @@ export const CreateMatching = ({ onPress }) => {
         answerContainer: {
             width: "100%",
             flexDirection: "row",
-            justifyContent: "space-evenly",
+            justifyContent: "center",
             alignItems: "center"
 
         },
@@ -49,13 +56,26 @@ export const CreateMatching = ({ onPress }) => {
             right: -20,
             top: -10,
             zIndex: 2
+        },
+        questionHolder: {
+            flexDirection: "column",
+            width: "45%",
+            alignItems: "center",
+            alignSelf: "flex-end"
         }
     })
 
 
+    useEffect(() => {
+        console.log("re render parent match: ", questions)
+    }, [questions])
 
 
-
+    /**
+     * 
+     * @param {*} item , from adding a new question/answer
+     * this function sets the state for the question component, helper function
+     */
     function handleAdd(item) {
         setDATA([...DATA, item]);
         setItemStates((prev) => {
@@ -65,9 +85,17 @@ export const CreateMatching = ({ onPress }) => {
         });
     }
 
+    /**
+     * 
+     * @param {*} idx index to remove from DATA and the items 
+     */
     function handleRemove(idx) {
         const newItems = [...DATA];
         newItems.splice(idx, 1);
+
+        for (let i = 0; i < newItems.length; i++) {
+            newItems[i].id = i;
+        }
         setDATA(newItems);
         setItemStates((prev) => {
             const newState = { ...prev };
@@ -76,42 +104,108 @@ export const CreateMatching = ({ onPress }) => {
         });
     }
 
+
+    /**
+     * question setter array that handles the creation of a new question/answer child
+     */
+    const addQuestion = () => {
+        setQuestions([...questions, '']);
+    };
+
+    /**
+     * 
+     * @param {*} index removes a child question+answer with index param
+     */
+    const removeQuestion = (index) => {
+        const newInputs = [...questions];
+        newInputs.splice(index, 1);
+        setQuestions(newInputs);
+    };
+
+    /**
+     * 
+     * @param {*} text text val from state updates on blur of input
+     * @param {*} index index to look for in questions state array
+     * @returns enables the user to see what they inputted
+     */
+    const updateQuestions = (text, index) => {
+        console.log("updating question: ", text, index)
+        setQuestions((prevValues) => {
+            const newTextInput = [...prevValues];
+            newTextInput[index] = text;
+            return newTextInput
+        })
+    };
+
+    //these 3 functions are equivalent to the above 3, but for the answer value
+    const addAnswer = () => {
+        setQuestions([...answers, '']);
+    };
+
+    const removeAnswer = (index) => {
+        const newInputs = [...answers];
+        newInputs.splice(index, 1);
+        setAnswers(newInputs);
+    };
+
+    const updateAnswers = (text, index) => {
+        console.log("updating question: ", text, index)
+        setAnswers((prevValues) => {
+            const newTextInput = [...prevValues];
+            newTextInput[index] = text;
+            return newTextInput
+        })
+    };
+
+
     useEffect(() => {
         console.log("new render : ", DATA)
     }, [DATA])
 
-    const RenderItem = ({ item, onPress }) => {
+
+    const RenderItem = ({ item }) => {
         const [question, setQuestion] = useState(itemStates[item.index]?.question ?? "");
         const [answer, setAnswer] = useState(itemStates[item.index]?.answer ?? "")
 
-        useEffect(() => {
-            console.log("new render in child uitem")
-            console.log("final data: ", item.item)
-        }, [DATA])
 
         return (
             <View style={styles.answerContainer}>
-                <CustomInput
-                    placeholder="Question ..."
-                    value={question}
-                    onChangeText={setQuestion}
-                    iconName="clipboard"
-                    autoCorrect={false}
-                    style={styles.answer}
-                />
-                <CustomInput
-                    style={styles.correctAnswer}
-                    placeholder="Correct Answer ..."
-                    value={answer}
-                    onChangeText={setAnswer}
-                    iconName="clipboard"
-                    autoCorrect={false}
-                />
-                {/* <TouchableOpacity onPress={() => onPress(question, answer, item.index)}>
-                    <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
-                </TouchableOpacity> */}
+                <View style={styles.questionHolder}>
+                    <CustomText p1 foreground style={{ textAlign: "center", maxWidth: "50%", alignSelf: "center" }}>
+                        {questions[item.index]}
+                    </CustomText>
+                    <CustomInput
+                        placeholder="Question ..."
+                        value={questions[item.index]}
+                        onChangeText={question => {
+                            setQuestion(question)
+                        }}
+                        onBlur={() => updateQuestions(question, item.index)}
+                        iconName="clipboard"
+                        autoCorrect={false}
+                        style={styles.answer}
+                    />
+                </View>
+                <View style={styles.questionHolder}>
+                    <CustomText p1 navbar style={{ textAlign: "center", maxWidth: "50%" }}>
+                        {answers[item.index]}
+                    </CustomText>
+                    <CustomInput
+                        style={styles.correctAnswer}
+                        placeholder="Correct Answer ..."
+                        value={answer}
+                        onChangeText={setAnswer}
+                        onBlur={() => updateAnswers(answer, item.index)}
+                        iconName="clipboard"
+                        autoCorrect={false}
+                    />
+                </View>
+
                 <TouchableOpacity onPress={() => {
                     handleRemove(item.index);
+                    removeQuestion(item.index);
+                    removeAnswer(item.index)
+
                 }}>
                     <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
                 </TouchableOpacity>
@@ -120,9 +214,12 @@ export const CreateMatching = ({ onPress }) => {
     }
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.delete} onPress={onPress}>
+            <TouchableOpacity style={styles.delete} onPress={del}>
                 <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
             </TouchableOpacity>
+            <CustomText p1 navbar style={{ textAlign: "center", maxWidth: "70%", alignSelf: "center", marginVertical: 5 }}>
+                {titleProp}
+            </CustomText>
             <CustomInput
                 style={styles.title}
                 placeholder="Question title ..."
@@ -158,10 +255,30 @@ export const CreateMatching = ({ onPress }) => {
                         id: DATA.length
                     };
                     handleAdd(newQuestion);
+                    addQuestion();
+                    addAnswer()
                 }}
             >
                 Add answer
             </RoundedButton>
+            <TouchableOpacity onPress={() => {
+                console.log("going up the tree... ",
+                    {
+                        title: title,
+                        questions: questions,
+                        answers: answers,
+                        points: points
+                    });
+                save(id,
+                    {
+                        title: title,
+                        questions: questions,
+                        answers: answers,
+                        type: 2
+                    })
+            }}>
+                <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
+            </TouchableOpacity>
         </View>
     )
 }

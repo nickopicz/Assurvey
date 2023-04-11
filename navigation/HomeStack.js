@@ -6,6 +6,10 @@ import { SurveyTaker } from "../screens/TakeSurvey";
 
 const Stack = createNativeStackNavigator();
 
+/**
+ *
+ * @returns homestack, or that which is shown when a user is authenticated
+ */
 export const HomeStack = () => {
   return (
     <Stack.Navigator

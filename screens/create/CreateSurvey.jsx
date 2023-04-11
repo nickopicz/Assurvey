@@ -39,6 +39,7 @@ export const CreateScreen = ({ navigation }) => {
 
     const [DATA, setDATA] = useState([])
 
+
     const questionTypes = [
         { label: "Multiple Choice", value: 0 },
         { label: "Open Ended", value: 1 },
@@ -51,10 +52,13 @@ export const CreateScreen = ({ navigation }) => {
     const [choice, setChoice] = useState(questionTypes)
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
+    const [graded, setGraded] = useState(false);
+
 
     const [formState, setFormState] = useState({
         title: "",
         code: "",
+        graded: graded,
         questions: [],
     });
 
@@ -62,7 +66,9 @@ export const CreateScreen = ({ navigation }) => {
     function handleRemove(idx) {
         const newItems = [...formState.questions];
         newItems.splice(idx, 1);
-
+        for (let i = 0; i < newItems.length; i++) {
+            newItems[i].index = i
+        }
         setFormState((prevState) => ({ ...prevState, questions: newItems }))
     }
 
@@ -72,12 +78,24 @@ export const CreateScreen = ({ navigation }) => {
     })
 
 
+    useEffect(() => {
+        console.log("form ", formState)
+    }, [formState])
+
+
+    /**
+     * 
+     * @param {*} item the item passed through the Flatlist renderItem param
+     * @returns the correct question type based on the type from db|state
+     */
     const QuestionType = ({ item }) => {
 
         const handleQuestionChange = (questionId, newQuestion) => {
+            console.log("item: ", item.index, " vs ", questionId)
+            console.log("pressed... question change", questionId, newQuestion)
             setFormState(prevState => {
                 const updatedQuestions = prevState.questions.map(question => {
-                    if (question.id === questionId) {
+                    if (question.index === questionId) {
                         return { ...question, ...newQuestion };
                     } else {
                         return question;
@@ -85,11 +103,9 @@ export const CreateScreen = ({ navigation }) => {
                 });
                 return { ...prevState, questions: updatedQuestions };
             });
+
         };
 
-        useEffect(() => {
-            console.log("type within questionm: ", item)
-        })
         if (item.item.type === 0) {
             return <CreateMC />
         }
@@ -98,11 +114,17 @@ export const CreateScreen = ({ navigation }) => {
         }
 
         if (item.item.type === 2) {
-            return <CreateMatching onPress={() => handleRemove(item.index)} onChange={handleQuestionChange} />
-
+            return <CreateMatching save={handleQuestionChange}
+                del={() => handleRemove(item.index)}
+                id={item.index}
+                titleProp={formState.questions[item.index].title}
+                questionsProp={formState.questions[item.index].questions}
+            />
         }
-
     }
+
+
+
     return (
         <View style={styles.container}>
             <View style={styles.codeContainer}>
@@ -160,6 +182,7 @@ export const CreateScreen = ({ navigation }) => {
                         console.log("type: ", choiceVal)
                         temp.push({
                             type: choiceVal,
+                            index: temp.length,
                         })
                         setFormState((prevState) => ({ ...prevState, questions: temp }))
                     }
