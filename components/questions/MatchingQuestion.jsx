@@ -7,7 +7,7 @@ import { CustomInput } from "../common/Input";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
+export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded }) => {
     useEffect(() => {
         console.log("questions : ", questionsProp.questions);
         console.log("index of question: ", id)
@@ -143,7 +143,7 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
 
     //these 3 functions are equivalent to the above 3, but for the answer value
     const addAnswer = () => {
-        setQuestions([...answers, '']);
+        setAnswers([...answers, '']);
     };
 
     const removeAnswer = (index) => {
@@ -271,6 +271,14 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
             >
                 Add answer
             </RoundedButton>
+            {graded ? <CustomInput
+                style={styles.correctAnswer}
+                placeholder="Points "
+                value={points}
+                onChangeText={setPoints}
+                iconName="clipboard"
+                autoCorrect={false}
+            /> : null}
             <TouchableOpacity onPress={() => {
                 console.log("going up the tree... ",
                     {

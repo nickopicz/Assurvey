@@ -6,8 +6,9 @@ import { View, StyleSheet, FlatList } from "react-native";
 import { Colors } from "../../Constants";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
-import { CreateMatching } from "../../components/questions/NewMatching";
-import { CreateMC } from "../../components/questions/MultipleChoiceQuestion";
+import { CreateMatching } from "../../components/questions/MatchingQuestion";
+import { CreateMC } from "../../components/questions/MCQuestion";
+import { CreateOpen } from "../../components/questions/OpenQuestion";
 
 
 export const CreateScreen = ({ navigation }) => {
@@ -52,7 +53,7 @@ export const CreateScreen = ({ navigation }) => {
     const [choice, setChoice] = useState(questionTypes)
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
-    const [graded, setGraded] = useState(false);
+    const [graded, setGraded] = useState(true);
 
 
     const [formState, setFormState] = useState({
@@ -109,14 +110,29 @@ export const CreateScreen = ({ navigation }) => {
         console.log("questions Prop: ", formState.questions[item.index])
 
         if (item.item.type === 0) {
-            return <CreateMC />
+            return <CreateMC
+                graded={formState.graded}
+                del={() => handleRemove(item.index)}
+                id={item.index}
+                titleProp={formState.questions[item.index].title}
+                questionsProp={formState.questions[item.index]}
+                save={handleQuestionChange}
+            />
         }
         if (item.item.type === 1) {
-            return null
+            return <CreateOpen
+                graded={formState.graded}
+                del={() => handleRemove(item.index)}
+                id={item.index}
+                titleProp={formState.questions[item.index].title}
+                questionsProp={formState.questions[item.index]}
+                save={handleQuestionChange} />
         }
 
         if (item.item.type === 2) {
-            return <CreateMatching save={handleQuestionChange}
+            return <CreateMatching
+                graded={formState.graded}
+                save={handleQuestionChange}
                 del={() => handleRemove(item.index)}
                 id={item.index}
                 titleProp={formState.questions[item.index].title}
