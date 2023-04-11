@@ -10,9 +10,22 @@ import firebase from "firebase"
  * @returns id for the firebase document object, required to add questions to survey doc
  * **NOTE ACCESSCODE** requires a unique user generated code, use "checkCode(code)" for that
  */
+
+async function checkAccessCode(accessCode: string) {
+    const codes = await db
+      .collection("surveys")
+      .where("accessCode", "==", accessCode)
+      .get();
+  
+    if (!codes.empty) {
+      throw new Error("Access code already exists. Please enter a different code.");
+    }
+  }
+  
 export async function createSurvey(user: string, questions: any[], accessCode: string) {
 
     try {
+        await checkAccessCode(accessCode);
 
         const temp: {
             creator: string,
@@ -20,7 +33,6 @@ export async function createSurvey(user: string, questions: any[], accessCode: s
         } = {
             creator: user,
             accessCode: accessCode,
-
         }
 
         let id = await db.collection("surveys").add({
