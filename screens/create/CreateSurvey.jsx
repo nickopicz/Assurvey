@@ -12,6 +12,8 @@ import { CreateMC } from "../../components/questions/MCQuestion";
 import { CreateOpen } from "../../components/questions/OpenQuestion";
 import { setDocId } from "../../redux/actions";
 import CustomText from "../../components/common/Text";
+import { checkAccessCode, createSurvey } from "../../functions/CreateSurvey";
+import { auth } from "../../firebase/firebase";
 
 
 
@@ -53,17 +55,15 @@ export const CreateScreen = ({ navigation }) => {
             borderWidth: 2,
             height: 55,
             marginVertical: 10
+        },
+        error: {
+            maxWidth: "50%"
         }
     })
 
     const dispatch = useDispatch();
 
-    //a cleanup function to reset the docId state
-    useEffect(() => {
-        return () => {
-            dispatch(setDocId(""))
-        }
-    }, [])
+
 
     const [DATA, setDATA] = useState([])
 
@@ -74,22 +74,31 @@ export const CreateScreen = ({ navigation }) => {
         { label: "Matching", value: 2 },
     ]
 
-    const [title, setTitle] = useState("");
-    const [code, setCode] = useState("");
     const [pressed, setPressed] = useState(false)
     const [choice, setChoice] = useState(questionTypes)
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
     const [graded, setGraded] = useState(true);
-
+    const [error, setError] = useState("")
 
     const [formState, setFormState] = useState({
         title: "",
         code: "",
-        graded: graded,
+        isGraded: graded,
+        author: "",
         questions: [],
     });
 
+
+
+
+    //a cleanup function to reset the docId state and sets author of survey
+    useEffect(() => {
+        setFormState((prevState) => ({ ...prevState, author: auth.currentUser.phoneNumber }))
+        return () => {
+            dispatch(setDocId(""))
+        }
+    }, [])
 
     function handleRemove(idx) {
         const newItems = [...formState.questions];
@@ -172,25 +181,31 @@ export const CreateScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <RoundedButton style={styles.saveButton} onPress={() => {
-                //upload to database and code helper functions will go here
-            }}
+            <RoundedButton
+                disabled={formState.code.length === 0 || !formState || !formState.title}
+                style={styles.saveButton}
+                onPress={async () => {
+                    //upload to database and code helper functions will go here
+                    await checkAccessCode(formState.code).then(() => {
+                        createSurvey(formState)
+                    }).catch(e => setError(e))
+                }}
             >
                 <CustomText white h4>Save / Publish</CustomText>
-
             </RoundedButton>
+            <CustomText p2 cancel style={styles.error}>{error}</CustomText>
             <View style={styles.codeContainer}>
                 <CustomInput small
                     placeholder="Survey Title"
                     autoFocus={true}
                     iconName="book"
-                    value={title}
+                    value={formState.title}
                     onChangeText={(title) => setFormState((prevState) => ({ ...prevState, title: title }))}
                 />
                 <CustomInput small
                     placeholder="Custom Access Code"
                     iconName="code"
-                    value={code}
+                    value={formState.code}
                     onChangeText={(code) => setFormState((prevState) => ({ ...prevState, code: code }))}
                 />
             </View>
