@@ -41,8 +41,8 @@ export const SurveyTaker = () => {
     ]
 
     const testMatch = [
-        { label: "hi", value: 0 },
-        { label: "ok", value: 1 },
+        { label: "cosi", value: 0 },
+        { label: "go", value: 1 },
         { label: "low", value: 2 },
         { label: "med", value: 3 },
         { label: "k", value: 4 },
@@ -51,13 +51,13 @@ export const SurveyTaker = () => {
     ]
 
     const matchTestQ = [
-        { id: 0, question: "hi sdf dsf sdf sdf sdf sdf sdf sdf  asd asd asd asd asd asd assdf?" },
-        { id: 1, question: "bye?" },
-        { id: 2, question: "never?" },
-        { id: 3, question: "dang?" },
-        { id: 4, question: "ok?" },
-        { id: 5, question: "rsdf sdf sdf sdf sssssssssssssssssssssssssssssssssss sssss asd as  sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf sdf dsage?" },
-        { id: 6, question: "name?" },
+        { id: 0, question: "who?" },
+        { id: 1, question: "why?" },
+        { id: 2, question: "when?" },
+        { id: 3, question: "how?" },
+        { id: 4, question: "for what?" },
+        { id: 5, question: "porque?" },
+        { id: 6, question: "perche?" },
     ]
 
 

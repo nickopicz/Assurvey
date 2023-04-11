@@ -23,6 +23,13 @@ export const HomeScreen = ({ navigation }) => {
             backgroundColor: Colors.confirm,
             borderWidth: 2,
             marginVertical: 20,
+        },
+        editButton: {
+            backgroundColor: Colors.light,
+            marginVertical: 20,
+            borderWidth: 2,
+            borderColor: Colors.foreground,
+
         }
     })
 
@@ -35,14 +42,21 @@ export const HomeScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate("Create")}
                     style={styles.createButton}
                 >
-                    <CustomText p2 white style={{ paddingHorizontal: 10 }}>Create Survey</CustomText>
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Create Survey</CustomText>
                 </RoundedButton>
                 <RoundedButton
                     large
                     onPress={() => navigation.navigate("Take")}
                     style={styles.takeButton}
                 >
-                    <CustomText p2 white style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
+                </RoundedButton>
+                <RoundedButton
+                    large
+                    onPress={() => navigation.navigate("EditMenu")}
+                    style={styles.editButton}
+                >
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Edit Survey</CustomText>
                 </RoundedButton>
 
             </View>

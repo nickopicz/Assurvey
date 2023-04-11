@@ -9,6 +9,8 @@ import { auth } from "./firebase/firebase";
 import { HomeStack } from "./navigation/HomeStack";
 import CustomText from "./components/common/Text";
 import { Colors } from "./Constants";
+import { Provider } from "react-redux";
+import { Store } from "./redux/store";
 
 
 export default function App() {
@@ -47,9 +49,11 @@ export default function App() {
   }
   if (loggedIn === true) {
     return (
-      <NavigationContainer>
-        <HomeStack />
-      </NavigationContainer>
+      <Provider store={Store}>
+        <NavigationContainer>
+          <HomeStack />
+        </NavigationContainer>
+      </Provider>
     )
   }
   else if (loggedIn === false) {

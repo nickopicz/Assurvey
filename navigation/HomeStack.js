@@ -3,6 +3,7 @@ import { HomeHeader } from "../components/HomeHeader";
 import { CreateScreen } from "../screens/create/CreateSurvey";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { SurveyTaker } from "../screens/TakeSurvey";
+import { EditMenuScreen } from "../screens/create/EditMenu";
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,10 @@ export const HomeStack = () => {
       <Stack.Screen
         name="Create"
         component={CreateScreen}
+      />
+      <Stack.Screen
+        name="EditMenu"
+        component={EditMenuScreen}
       />
     </Stack.Navigator>
   );

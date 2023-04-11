@@ -16,15 +16,15 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
     const [itemStates, setItemStates] = useState({});
-    const [answers, setAnswers] = useState(questionsProp.answers)
-    const [questions, setQuestions] = useState(questionsProp.questions)
-    const [points, setPoints] = useState(0)
+    const [answers, setAnswers] = useState(questionsProp.answers);
+    const [questions, setQuestions] = useState(questionsProp.questions);
+    const [points, setPoints] = useState(questionsProp.points);
 
 
 
     const styles = StyleSheet.create({
         container: {
-            width: "100%",
+            minWidth: 600,
             backgroundColor: Colors.white,
             marginVertical: 5,
             minHeight: 150 + DATA.length * 100,
@@ -65,6 +65,19 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
             width: "45%",
             alignItems: "center",
             alignSelf: "flex-end"
+        },
+        saveButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "center"
+        },
+        pointContainer: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+        },
+        pointInput: {
+            width: "70%",
         }
     })
 
@@ -74,6 +87,19 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
     }, [questions])
 
 
+    /**
+     * 
+     * @param {*} e character to check if number
+     */
+    const handlePointsInput = (e) => {
+        const newValue = e.replace(/[^0-9]/g, '');
+        console.log("regex changed: ", newValue)
+        setPoints(newValue);
+    }
+
+    useEffect(() => {
+        console.log("points: ", points)
+    }, [points])
     /**
      * 
      * @param {*} item , from adding a new question/answer
@@ -240,7 +266,7 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
             />
 
             <FlatList
-                data={DATA}
+                data={answers ? answers : DATA}
                 renderItem={(item) => (
                     <RenderItem
                         item={item}
@@ -271,15 +297,18 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
             >
                 Add answer
             </RoundedButton>
-            {graded ? <CustomInput
-                style={styles.correctAnswer}
-                placeholder="Points "
-                value={points}
-                onChangeText={setPoints}
-                iconName="clipboard"
-                autoCorrect={false}
-            /> : null}
-            <TouchableOpacity onPress={() => {
+            {graded ? (<View style={styles.pointContainer}>
+                <View style={styles.pointInput}>
+                    <CustomInput
+                        placeholder="Points "
+                        value={points}
+                        onChangeText={handlePointsInput}
+                        iconName="clipboard"
+                        autoCorrect={false}
+                    /></View>
+                <CustomText p1 navbar>{points}</CustomText>
+            </View>) : null}
+            <TouchableOpacity style={styles.saveButton} onPress={() => {
                 console.log("going up the tree... ",
                     {
                         title: title,
@@ -297,6 +326,8 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
                     })
             }}>
                 <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
+                <CustomText p2 confirm>save</CustomText>
+
             </TouchableOpacity>
         </View>
     )

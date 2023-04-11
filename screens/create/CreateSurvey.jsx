@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 import { RoundedButton } from "../../components/common/Button";
 import { CustomInput } from "../../components/common/Input";
@@ -9,7 +10,16 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { CreateMatching } from "../../components/questions/MatchingQuestion";
 import { CreateMC } from "../../components/questions/MCQuestion";
 import { CreateOpen } from "../../components/questions/OpenQuestion";
+import { setDocId } from "../../redux/actions";
+import CustomText from "../../components/common/Text";
 
+
+
+/**
+ * 
+ *  To add a survey to the database, a user must save a question each time they create one in order to save progrss
+ * the state that all the questions are stored in is called "formState", located around/on line 86-90
+ */
 
 export const CreateScreen = ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -23,7 +33,7 @@ export const CreateScreen = ({ navigation }) => {
             alignItems: "center",
         },
         addButton: {
-            width: "40%",
+            width: 200,
             borderColor: Colors.navbar,
             borderWidth: 2
         },
@@ -35,8 +45,25 @@ export const CreateScreen = ({ navigation }) => {
             alignItems: "center",
             justifyContent: "center",
             width: "50%",
+        },
+        saveButton: {
+            backgroundColor: Colors.confirm,
+            width: "20%",
+            borderColor: Colors.navbar,
+            borderWidth: 2,
+            height: 55,
+            marginVertical: 10
         }
     })
+
+    const dispatch = useDispatch();
+
+    //a cleanup function to reset the docId state
+    useEffect(() => {
+        return () => {
+            dispatch(setDocId(""))
+        }
+    }, [])
 
     const [DATA, setDATA] = useState([])
 
@@ -145,6 +172,13 @@ export const CreateScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <RoundedButton style={styles.saveButton} onPress={() => {
+                //upload to database and code helper functions will go here
+            }}
+            >
+                <CustomText white h4>Save / Publish</CustomText>
+
+            </RoundedButton>
             <View style={styles.codeContainer}>
                 <CustomInput small
                     placeholder="Survey Title"
@@ -192,26 +226,29 @@ export const CreateScreen = ({ navigation }) => {
                             defaultIndex={0}
                             containerStyle={{ width: 200 }}
                             onChangeItem={item => console.log(item.label, item.value)} /> : null}
-                </View>
-                <RoundedButton style={styles.addButton} onPress={() => {
-                    setPressed(!pressed);
-                    if (pressed === true && choiceVal !== null) {
-                        let temp = formState.questions;
-                        console.log("type: ", choiceVal)
-                        temp.push({
-                            type: choiceVal,
-                            index: temp.length,
-                            title: "",
-                            questions: [""],
-                            answers: [""]
-                        })
-                        setFormState((prevState) => ({ ...prevState, questions: temp }))
-                    }
-                }}
-                >
-                    <AntDesign name="plus" size={50} />
+                    <RoundedButton style={styles.addButton} onPress={() => {
+                        setPressed(!pressed);
+                        if (pressed === true && choiceVal !== null) {
+                            let temp = formState.questions;
+                            console.log("type: ", choiceVal)
+                            temp.push({
+                                type: choiceVal,
+                                index: temp.length,
+                                title: "",
+                                points: 0,
+                                questions: [""],
+                                answers: [""]
+                            })
+                            setFormState((prevState) => ({ ...prevState, questions: temp }))
+                        }
+                    }}
+                    >
+                        <AntDesign name="plus" size={50} />
 
-                </RoundedButton>
+                    </RoundedButton>
+                </View>
+
+
             </View>
         </View>
     )

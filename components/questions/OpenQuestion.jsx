@@ -14,13 +14,13 @@ export const CreateOpen = ({ save, del, id, titleProp, questionsProp, graded }) 
     }, [])
 
     const [title, setTitle] = useState(questionsProp.title)
-    const [points, setPoints] = useState(0)
+    const [points, setPoints] = useState(questionsProp.points)
 
 
 
     const styles = StyleSheet.create({
         container: {
-            width: "100%",
+            width: 500,
             backgroundColor: Colors.white,
             marginVertical: 5,
             minHeight: 200,
@@ -61,9 +61,34 @@ export const CreateOpen = ({ save, del, id, titleProp, questionsProp, graded }) 
             width: "85%",
             alignItems: "center",
             alignSelf: "flex-end"
+        },
+        saveButton: {
+            flexDirection: "row",
+            alignItems: "center",
+            alignSelf: "center"
+
+
+        },
+        pointContainer: {
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
+        },
+        pointInput: {
+            width: "70%",
         }
     });
 
+
+    /**
+     * 
+     * @param {*} e character to check if number
+     */
+    const handlePointsInput = (e) => {
+        const newValue = e.replace(/[^0-9]/g, '');
+        console.log("regex changed: ", newValue)
+        setPoints(newValue);
+    }
 
     return (
         <View style={styles.container}>
@@ -83,29 +108,38 @@ export const CreateOpen = ({ save, del, id, titleProp, questionsProp, graded }) 
             />
 
 
-            {graded ? <CustomInput
-                style={styles.correctAnswer}
-                placeholder="Points "
-                value={points}
-                onChangeText={setPoints}
-                iconName="clipboard"
-                autoCorrect={false}
-            /> : null}
-            <TouchableOpacity onPress={() => {
-                console.log("going up the tree... ",
-                    {
-                        title: title,
-                        points: points
-                    });
-                save(id,
-                    {
-                        title: title,
-                        type: 1,
-                        points: points
-                    })
-            }}>
+            {graded ? (
+                <View style={styles.pointContainer}>
+                    <View style={styles.pointInput}>
+                        <CustomInput
+                            placeholder="Points "
+                            value={points}
+                            onChangeText={handlePointsInput}
+                            iconName="clipboard"
+                            autoCorrect={false}
+                        /></View>
+                    <CustomText p1 navbar>{points}</CustomText>
+                </View>
+            ) : null
+            }
+            <TouchableOpacity
+                style={styles.saveButton}
+                onPress={() => {
+                    console.log("going up the tree... ",
+                        {
+                            title: title,
+                            points: points
+                        });
+                    save(id,
+                        {
+                            title: title,
+                            type: 1,
+                            points: points
+                        })
+                }}>
                 <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
+                <CustomText p2 confirm>save</CustomText>
             </TouchableOpacity>
-        </View>
+        </View >
     )
 }
