@@ -8,13 +8,16 @@ import { Ionicons } from "@expo/vector-icons";
 
 
 export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
-
+    useEffect(() => {
+        console.log("questions : ", questionsProp.questions);
+        console.log("index of question: ", id)
+    }, [])
 
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
     const [itemStates, setItemStates] = useState({});
-    const [answers, setAnswers] = useState([])
-    const [questions, setQuestions] = useState([])
+    const [answers, setAnswers] = useState(questionsProp.answers)
+    const [questions, setQuestions] = useState(questionsProp.questions)
     const [points, setPoints] = useState(0)
 
 
@@ -77,6 +80,8 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
      * this function sets the state for the question component, helper function
      */
     function handleAdd(item) {
+        console.log("prev data: ", DATA);
+        console.log("new item: ", item)
         setDATA([...DATA, item]);
         setItemStates((prev) => {
             const newState = { ...prev };
@@ -86,7 +91,6 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
     }
 
     /**
-     * 
      * @param {*} idx index to remove from DATA and the items 
      */
     function handleRemove(idx) {
@@ -164,8 +168,14 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
 
 
     const RenderItem = ({ item }) => {
-        const [question, setQuestion] = useState(itemStates[item.index]?.question ?? "");
-        const [answer, setAnswer] = useState(itemStates[item.index]?.answer ?? "")
+        useEffect(() => {
+            console.log("answers ", answers)
+            console.log("index: ", item.index)
+            console.log("whole object: ", item)
+
+        })
+        const [question, setQuestion] = useState(questions[item.index]);
+        const [answer, setAnswer] = useState(answers[item.index])
 
 
         return (
@@ -274,7 +284,8 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp }) => {
                         title: title,
                         questions: questions,
                         answers: answers,
-                        type: 2
+                        type: 2,
+                        points: points
                     })
             }}>
                 <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />

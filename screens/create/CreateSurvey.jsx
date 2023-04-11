@@ -106,6 +106,8 @@ export const CreateScreen = ({ navigation }) => {
 
         };
 
+        console.log("questions Prop: ", formState.questions[item.index])
+
         if (item.item.type === 0) {
             return <CreateMC />
         }
@@ -118,7 +120,7 @@ export const CreateScreen = ({ navigation }) => {
                 del={() => handleRemove(item.index)}
                 id={item.index}
                 titleProp={formState.questions[item.index].title}
-                questionsProp={formState.questions[item.index].questions}
+                questionsProp={formState.questions[item.index]}
             />
         }
     }
@@ -183,6 +185,9 @@ export const CreateScreen = ({ navigation }) => {
                         temp.push({
                             type: choiceVal,
                             index: temp.length,
+                            title: "",
+                            questions: [""],
+                            answers: [""]
                         })
                         setFormState((prevState) => ({ ...prevState, questions: temp }))
                     }
