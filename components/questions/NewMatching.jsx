@@ -7,9 +7,10 @@ import { CustomInput } from "../common/Input";
 import { Ionicons } from "@expo/vector-icons";
 
 
-export const CreateMatching = ({ questionSetter, answerSetter }) => {
+export const CreateMatching = ({ onPress }) => {
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
+    const [itemStates, setItemStates] = useState({});
 
     const styles = StyleSheet.create({
         container: {
@@ -20,8 +21,11 @@ export const CreateMatching = ({ questionSetter, answerSetter }) => {
             justifyContent: "flex-start"
 
         },
+        title: {
+            width: "90%"
+        },
         input: {
-            width: "100%"
+            width: "80%"
         },
         answerContainer: {
             width: "100%",
@@ -39,71 +43,58 @@ export const CreateMatching = ({ questionSetter, answerSetter }) => {
         },
         correctAnswer: {
             width: "50%"
+        },
+        delete: {
+            position: "absolute",
+            right: -20,
+            top: -10,
+            zIndex: 2
         }
     })
 
-    const [questions, setQuestions] = useState([]);
-    const [answers, setAnswers] = useState([]);
 
-    function addQuestion(el) {
-        setQuestions([...questions, el]);
-    }
 
-    function removeQuestion(index) {
-        const newItems = [...questions];
-        newItems.splice(index, 1);
-        setQuestions(newItems);
 
-    }
 
-    function addAnswer(answer) {
-        setAnswers([...answers, answer])
-    }
-
-    function removeAnswer(index) {
-        const newItems = [...answers];
-        newItems.splice(index, 1);
-        setAnswers(newItems);
-
-    }
-
-    function onPress(question, answer) {
-        let temp = DATA;
-
-        for (let i = 0; i < temp.length; i++) {
-            temp[i].id = i;
-            if (temp[i].id === item.id) {
-                temp[i].question = question;
-                temp[i].answer = answer;
-            }
-        }
-        console.log("matching dataL: ", temp)
-        setDATA(temp)
-
+    function handleAdd(item) {
+        setDATA([...DATA, item]);
+        setItemStates((prev) => {
+            const newState = { ...prev };
+            newState[item.id] = { question: "", answer: "" };
+            return newState;
+        });
     }
 
     function handleRemove(idx) {
         const newItems = [...DATA];
         newItems.splice(idx, 1);
         setDATA(newItems);
+        setItemStates((prev) => {
+            const newState = { ...prev };
+            delete newState[idx];
+            return newState;
+        });
     }
 
     useEffect(() => {
-        console.log("data from question : ", DATA)
-    })
+        console.log("new render : ", DATA)
+    }, [DATA])
 
-    const RenderItem = (item) => {
-        const [question, setQuestion] = useState("");
-        const [answer, setAnswer] = useState("");
+    const RenderItem = ({ item, onPress }) => {
+        const [question, setQuestion] = useState(itemStates[item.index]?.question ?? "");
+        const [answer, setAnswer] = useState(itemStates[item.index]?.answer ?? "")
 
-
+        useEffect(() => {
+            console.log("new render in child uitem")
+            console.log("final data: ", item.item)
+        }, [DATA])
 
         return (
             <View style={styles.answerContainer}>
                 <CustomInput
                     placeholder="Question ..."
-                    value={item.question}
-                    onChangeText={(question) => setQuestion(question)}
+                    value={question}
+                    onChangeText={setQuestion}
                     iconName="clipboard"
                     autoCorrect={false}
                     style={styles.answer}
@@ -111,15 +102,17 @@ export const CreateMatching = ({ questionSetter, answerSetter }) => {
                 <CustomInput
                     style={styles.correctAnswer}
                     placeholder="Correct Answer ..."
-                    value={item.answer}
-                    onChangeText={(answer) => setAnswer(answer)}
+                    value={answer}
+                    onChangeText={setAnswer}
                     iconName="clipboard"
                     autoCorrect={false}
                 />
-                <TouchableOpacity onPress={() => { onPress(question, answer); addQuestion(question); addAnswer(answer) }}>
+                {/* <TouchableOpacity onPress={() => onPress(question, answer, item.index)}>
                     <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { removeQuestion(item.id); removeAnswer(item.id); handleRemove(item.id) }}>
+                </TouchableOpacity> */}
+                <TouchableOpacity onPress={() => {
+                    handleRemove(item.index);
+                }}>
                     <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
                 </TouchableOpacity>
             </View>
@@ -127,9 +120,11 @@ export const CreateMatching = ({ questionSetter, answerSetter }) => {
     }
     return (
         <View style={styles.container}>
+            <TouchableOpacity style={styles.delete} onPress={onPress}>
+                <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
+            </TouchableOpacity>
             <CustomInput
                 style={styles.title}
-
                 placeholder="Question title ..."
                 value={title}
                 onChangeText={(title) => setTitle(title)}
@@ -140,19 +135,29 @@ export const CreateMatching = ({ questionSetter, answerSetter }) => {
             <FlatList
                 data={DATA}
                 renderItem={(item) => (
-                    <RenderItem onPress={onPress} />
+                    <RenderItem
+                        item={item}
+                        onPress={(question, answer, id) => {
+                            const newData = [...DATA];
+                            const index = DATA.findIndex((i) => i.id === id);
+                            if (index !== -1) {
+                                newData[index].question = question;
+                                newData[index].answer = answer;
+                                setDATA(newData);
+                            }
+                        }}
+                    />
                 )}
             />
             <RoundedButton
                 style={styles.newAnswer}
                 onPress={() => {
-                    let temp = DATA;
-                    temp.push({
+                    let newQuestion = {
                         question: "",
                         answer: "",
                         id: DATA.length
-                    });
-                    setDATA(temp)
+                    };
+                    handleAdd(newQuestion);
                 }}
             >
                 Add answer

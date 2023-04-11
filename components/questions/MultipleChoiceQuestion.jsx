@@ -53,8 +53,8 @@ export const CreateMC = ({ questionSetter, answerSetter }) => {
         const newItems = [...answers];
         newItems.splice(index, 1);
         setAnswers(newItems);
-
     }
+
 
     function onPress(question, answer) {
         let temp = DATA;
@@ -68,8 +68,8 @@ export const CreateMC = ({ questionSetter, answerSetter }) => {
         }
         console.log("matching dataL: ", temp)
         setDATA(temp)
-
     }
+
 
     function handleRemove(idx) {
         const newItems = [...DATA];
@@ -77,15 +77,15 @@ export const CreateMC = ({ questionSetter, answerSetter }) => {
         setDATA(newItems);
     }
 
+
     useEffect(() => {
         console.log("data from question : ", DATA)
     })
 
+
     const RenderItem = (item) => {
         const [question, setQuestion] = useState("");
         const [answer, setAnswer] = useState("");
-
-
 
         return (
             <View style={styles.answerContainer}>
@@ -98,15 +98,16 @@ export const CreateMC = ({ questionSetter, answerSetter }) => {
                     iconName="clipboard"
                     autoCorrect={false}
                 />
-                <TouchableOpacity onPress={() => { onPress(question, answer); addAnswer(answer) }}>
+                {/* <TouchableOpacity onPress={() => { onPress(question, answer); addAnswer(answer) }}>
                     <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { removeAnswer(item.id); handleRemove(item.id) }}>
+                </TouchableOpacity> */}
+                <TouchableOpacity onPress={() => { removeAnswer(item.index); handleRemove(item.index) }}>
                     <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
                 </TouchableOpacity>
             </View>
         )
     }
+
     return (
         <View style={styles.container}>
             <CustomInput
@@ -128,13 +129,13 @@ export const CreateMC = ({ questionSetter, answerSetter }) => {
             <RoundedButton
                 style={styles.newAnswer}
                 onPress={() => {
-                    let temp = DATA;
-                    temp.push({
+                    let temp = {
                         question: "",
                         answer: "",
                         id: DATA.length
-                    });
-                    setDATA(temp)
+                    };
+
+                    setDATA([...DATA, temp])
                 }}
             >
                 Add answer

@@ -52,6 +52,19 @@ export const CreateScreen = ({ navigation }) => {
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
 
+    const [formState, setFormState] = useState({
+        title: "",
+        code: "",
+        questions: [],
+    });
+
+
+    function handleRemove(idx) {
+        const newItems = [...formState.questions];
+        newItems.splice(idx, 1);
+
+        setFormState((prevState) => ({ ...prevState, questions: newItems }))
+    }
 
     useEffect(() => {
         console.log(open)
@@ -60,6 +73,20 @@ export const CreateScreen = ({ navigation }) => {
 
 
     const QuestionType = ({ item }) => {
+
+        const handleQuestionChange = (questionId, newQuestion) => {
+            setFormState(prevState => {
+                const updatedQuestions = prevState.questions.map(question => {
+                    if (question.id === questionId) {
+                        return { ...question, ...newQuestion };
+                    } else {
+                        return question;
+                    }
+                });
+                return { ...prevState, questions: updatedQuestions };
+            });
+        };
+
         useEffect(() => {
             console.log("type within questionm: ", item)
         })
@@ -71,7 +98,7 @@ export const CreateScreen = ({ navigation }) => {
         }
 
         if (item.item.type === 2) {
-            return <CreateMatching />
+            return <CreateMatching onPress={() => handleRemove(item.index)} onChange={handleQuestionChange} />
 
         }
 
@@ -84,24 +111,26 @@ export const CreateScreen = ({ navigation }) => {
                     autoFocus={true}
                     iconName="book"
                     value={title}
-                    onChangeText={(title) => setTitle(title)}
+                    onChangeText={(title) => setFormState((prevState) => ({ ...prevState, title: title }))}
                 />
                 <CustomInput small
                     placeholder="Custom Access Code"
                     iconName="code"
                     value={code}
-                    onChangeText={(code) => setCode(code)}
+                    onChangeText={(code) => setFormState((prevState) => ({ ...prevState, code: code }))}
                 />
             </View>
             <View style={{ minHeight: 300 + DATA.length * 100, width: "100%", alignItems: "center" }}>
                 <FlatList
                     scrollEnabled={false}
-                    style={{ width: "60%" }}
-                    data={DATA}
+                    style={{ width: "100%" }}
+                    contentContainerStyle={{ alignItems: "center", width: "100%" }}
+                    data={formState.questions}
                     renderItem={(item) => (
                         <QuestionType item={item} />
                     )}
-                /></View>
+                />
+            </View>
             <View style={styles.addContainer}>
                 <View style={{
                     minHeight: open === true ? 200 : 50,
@@ -127,12 +156,12 @@ export const CreateScreen = ({ navigation }) => {
                 <RoundedButton style={styles.addButton} onPress={() => {
                     setPressed(!pressed);
                     if (pressed === true && choiceVal !== null) {
-                        let temp = DATA;
+                        let temp = formState.questions;
                         console.log("type: ", choiceVal)
                         temp.push({
                             type: choiceVal,
                         })
-                        setDATA(temp)
+                        setFormState((prevState) => ({ ...prevState, questions: temp }))
                     }
                 }}
                 >
