@@ -25,8 +25,10 @@ export const HomeHeader = ({ navigation }) => {
         signOut: {
             marginTop: 0,
             marginRight: 10,
-            textAlign: "right",
-        },
+            alignSelf: "flex-end",
+            color: Colors.navbar,
+            width: 60
+        }
     })
 
     const signOut = () => {
