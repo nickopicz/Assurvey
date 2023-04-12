@@ -136,7 +136,7 @@ export const SurveyTaker = ({ navigation }) => {
                 medium
                 style={styles.completeButton}
                 onPress={() => {
-                    navigation.navigate("Home")
+                    navigation.goBack()
                 }}
             >
                 <CustomText p1 navbar>
