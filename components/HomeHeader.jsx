@@ -23,9 +23,11 @@ export const HomeHeader = ({ navigation }) => {
             width: 30
         },
         signOut:{
-            marginTop: 0,
+            marginTop: -40,
             marginRight: 10,
-            textAlign: "right",
+            alignSelf: "flex-end",
+            color: Colors.navbar,
+            width: 60
         }
     })
 

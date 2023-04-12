@@ -13,7 +13,7 @@ import { Colors } from "./Constants";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    "OverPass-Regular": require("./assets/font/Overpass-Regular.ttf"),
+    "Montserrat-Regular": require("./assets/font/Montserrat-Regular.ttf"),
   });
   const [loggedIn, setLoggedIn] = useState()
 

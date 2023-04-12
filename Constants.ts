@@ -5,8 +5,9 @@ export const Colors = {
   foreground: "#222831",
   navbar: "#393E46",
   contrast: "#6495ED",
-  light: "#ADD8E6",
+  light: "#FFFFFF",
   white: "#FFFFFF",
+  black: "#000000",
   record: "#DA8F81",
   earth: "#9d847e",
   blueWhite: "#dff5fb",
@@ -22,34 +23,34 @@ export const Dim = {
 export const Font = {
   h1: {
     size: 36,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   h2: {
     size: 32,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   h3: {
     size: 28,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   h4: {
     size: 24,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   p1: {
     size: 20,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   p2: {
     size: 18,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   p3: {
     size: 14,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
   p4: {
     size: 12,
-    family: "OverPass-Regular",
+    family: "Montserrat-Regular",
   },
 };
