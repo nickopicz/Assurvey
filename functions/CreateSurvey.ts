@@ -22,16 +22,43 @@ export async function checkAccessCode(accessCode: string) {
     }
 }
 
+
+/**
+ * 
+ * @param form state data from create survey page
+ * @returns promise that indicates if creation was successful
+ */
 export async function createSurvey(form: any) {
 
     try {
         let id = await db.collection("surveys").add({
-            form
+            author: form.author,
+            code: form.code,
+            isGraded: form.isGraded,
+            questions: form.questions,
+            title: form.title,
         }).then((res) => { return res.id })
 
         return id;
     } catch (e) {
         console.warn("error in createSurvey: ", e)
+    }
+}
+
+export async function saveSurvey(docId: string, form: any) {
+    try {
+        await db.collection("surveys").doc(docId).set({
+            author: form.author,
+            code: form.code,
+            isGraded: form.isGraded,
+            questions: form.questions,
+            title: form.title,
+        }).then((res) => {
+            console.log("save success", res)
+        })
+
+    } catch (e) {
+        throw new Error("warning in saving survey")
     }
 }
 

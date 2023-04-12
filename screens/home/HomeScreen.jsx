@@ -4,8 +4,12 @@ import { RoundedButton } from "../../components/common/Button";
 import CustomText from "../../components/common/Text";
 import { Colors } from "../../Constants";
 import { auth } from "../../firebase/firebase";
+import { CustomInput } from "../../components/common/Input";
 
 export const HomeScreen = ({ navigation }) => {
+
+    const [code, setCode] = useState("")
+
     const styles = StyleSheet.create({
         container: {
             alignItems: "center",
@@ -30,13 +34,29 @@ export const HomeScreen = ({ navigation }) => {
             borderWidth: 2,
             borderColor: Colors.foreground,
 
+        },
+        navContainer: {
+            alignItems: "center"
         }
     })
 
     return (
         <View style={styles.container} >
             <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
-            <View>
+            <View style={styles.navContainer}>
+                <CustomInput
+                    placeholder="Access Code"
+                    value={code}
+                    onChangeText={setCode}
+                />
+                <RoundedButton
+                    large
+                    disabled={code === ""}
+                    onPress={() => navigation.navigate("Take")}
+                    style={styles.takeButton}
+                >
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
+                </RoundedButton>
                 <RoundedButton
                     large
                     onPress={() => navigation.navigate("Create")}
@@ -44,13 +64,7 @@ export const HomeScreen = ({ navigation }) => {
                 >
                     <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Create Survey</CustomText>
                 </RoundedButton>
-                <RoundedButton
-                    large
-                    onPress={() => navigation.navigate("Take")}
-                    style={styles.takeButton}
-                >
-                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
-                </RoundedButton>
+
                 <RoundedButton
                     large
                     onPress={() => navigation.navigate("EditMenu")}

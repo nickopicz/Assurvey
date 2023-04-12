@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { RoundedButton } from "../../components/common/Button";
 import { CustomInput } from "../../components/common/Input";
@@ -12,9 +12,9 @@ import { CreateMC } from "../../components/questions/MCQuestion";
 import { CreateOpen } from "../../components/questions/OpenQuestion";
 import { setDocId } from "../../redux/actions";
 import CustomText from "../../components/common/Text";
-import { checkAccessCode, createSurvey } from "../../functions/CreateSurvey";
+import { checkAccessCode, createSurvey, saveSurvey } from "../../functions/CreateSurvey";
 import { auth } from "../../firebase/firebase";
-
+import { getSurvey } from "../../functions/FetchSurveys";
 
 
 /**
@@ -31,7 +31,7 @@ export const CreateScreen = ({ navigation }) => {
         },
         codeContainer: {
             width: "100%",
-            height: 150,
+            minHeight: 150,
             alignItems: "center",
         },
         addButton: {
@@ -58,6 +58,13 @@ export const CreateScreen = ({ navigation }) => {
         },
         error: {
             maxWidth: "50%"
+        },
+        rowContainer: {
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+            width: "80%",
+            minHeight: 100,
+            alignItems: "center"
         }
     })
 
@@ -89,12 +96,21 @@ export const CreateScreen = ({ navigation }) => {
         questions: [],
     });
 
-
+    const docId = useSelector(
+        (state) => state.docIdRed.docId
+    )
 
 
     //a cleanup function to reset the docId state and sets author of survey
     useEffect(() => {
-        setFormState((prevState) => ({ ...prevState, author: auth.currentUser.phoneNumber }))
+        if (docId !== "") {
+            getSurvey(docId).then((res) => {
+                setFormState(res)
+            }).catch((e) => {
+                console.warn(e)
+            })
+        }
+        setFormState((prevState) => ({ ...prevState, author: auth.currentUser.email }))
         return () => {
             dispatch(setDocId(""))
         }
@@ -143,11 +159,11 @@ export const CreateScreen = ({ navigation }) => {
 
         };
 
-        console.log("questions Prop: ", formState.questions[item.index])
+        console.log("questions Prop: ", formState.questions[item.item.index])
 
         if (item.item.type === 0) {
             return <CreateMC
-                graded={formState.graded}
+                graded={formState.isGraded}
                 del={() => handleRemove(item.index)}
                 id={item.index}
                 titleProp={formState.questions[item.index].title}
@@ -157,7 +173,7 @@ export const CreateScreen = ({ navigation }) => {
         }
         if (item.item.type === 1) {
             return <CreateOpen
-                graded={formState.graded}
+                graded={formState.isGraded}
                 del={() => handleRemove(item.index)}
                 id={item.index}
                 titleProp={formState.questions[item.index].title}
@@ -167,7 +183,7 @@ export const CreateScreen = ({ navigation }) => {
 
         if (item.item.type === 2) {
             return <CreateMatching
-                graded={formState.graded}
+                graded={formState.isGraded}
                 save={handleQuestionChange}
                 del={() => handleRemove(item.index)}
                 id={item.index}
@@ -186,8 +202,23 @@ export const CreateScreen = ({ navigation }) => {
                 style={styles.saveButton}
                 onPress={async () => {
                     //upload to database and code helper functions will go here
+
+
                     await checkAccessCode(formState.code).then(() => {
-                        createSurvey(formState)
+                        if (docId !== "") {
+                            console.log("saving survey")
+                            saveSurvey(docId, formState).catch(e => console.warn(e))
+                        } else {
+                            createSurvey(formState);
+                            setFormState({
+                                title: "",
+                                code: "",
+                                isGraded: graded,
+                                author: auth.currentUser.email,
+                                questions: [],
+                            })
+                        }
+
                     }).catch(e => setError(e))
                 }}
             >
@@ -195,19 +226,28 @@ export const CreateScreen = ({ navigation }) => {
             </RoundedButton>
             <CustomText p2 cancel style={styles.error}>{error}</CustomText>
             <View style={styles.codeContainer}>
-                <CustomInput small
-                    placeholder="Survey Title"
-                    autoFocus={true}
-                    iconName="book"
-                    value={formState.title}
-                    onChangeText={(title) => setFormState((prevState) => ({ ...prevState, title: title }))}
-                />
-                <CustomInput small
-                    placeholder="Custom Access Code"
-                    iconName="code"
-                    value={formState.code}
-                    onChangeText={(code) => setFormState((prevState) => ({ ...prevState, code: code }))}
-                />
+                <View style={styles.rowContainer}>
+                    <CustomText h3 navbar>{formState.title}</CustomText>
+
+                    <CustomInput small
+                        placeholder="Survey Title"
+                        autoFocus={true}
+                        iconName="book"
+                        value={formState.title}
+                        onChangeText={(title) => setFormState((prevState) => ({ ...prevState, title: title }))}
+                    />
+                </View>
+                <View style={styles.rowContainer}>
+                    <CustomText h3 navbar>{formState.code}</CustomText>
+
+                    <CustomInput small
+                        placeholder="Custom Access Code"
+                        iconName="code"
+                        value={formState.code}
+                        onChangeText={(code) => setFormState((prevState) => ({ ...prevState, code: code }))}
+                    />
+
+                </View>
             </View>
             <View style={{ minHeight: 300 + DATA.length * 100, width: "100%", alignItems: "center" }}>
                 <FlatList
