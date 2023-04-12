@@ -37,12 +37,20 @@ export const CreateAccountScreen = ({
 
 
   async function handlePress() {
-    await auth.createUserWithEmailAndPassword(email, password).catch(function (error) {
+    await auth.createUserWithEmailAndPassword(email, password).catch(async function (error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode == 'auth/weak-password') {
         alert('The password is too weak.');
+      } else if (errorCode === "auth/email-already-in-use") {
+        await auth.signInWithEmailAndPassword(email, password).catch(async function (error) {
+          // Handle Errors here.
+          var errorMessage = error.message;
+
+          alert(errorMessage);
+
+        })
       } else {
         alert(errorMessage);
       }
@@ -70,7 +78,7 @@ export const CreateAccountScreen = ({
           autoFocus={true}
           autoCorrect={false}
           placeholder="*********"
-          secureTextEntry={true}
+          secureTextEntry
           iconName="key"
           value={password}
           onChangeText={(password) => setPassword(password)}

@@ -67,6 +67,7 @@ export const CustomInput = React.forwardRef((props, ref) => {
           ...props.style,
           color: props.textColor ? props.textColor : Colors.foreground,
         }}
+        secureTextEntry={props.secureTextEntry}
         onBlur={props.onBlur}
         onChangeText={props.onChangeText}
         ref={ref}
