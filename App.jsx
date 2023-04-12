@@ -49,11 +49,9 @@ export default function App() {
   }
   if (loggedIn === true) {
     return (
-      <Provider store={Store}>
-        <NavigationContainer>
-          <HomeStack />
-        </NavigationContainer>
-      </Provider>
+      <NavigationContainer>
+        <HomeStack />
+      </NavigationContainer>
     )
   }
   else if (loggedIn === false) {

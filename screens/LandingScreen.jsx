@@ -4,7 +4,9 @@ import { RoundedButton } from "../components/common/Button";
 import { View, StyleSheet } from "react-native";
 import { Colors } from "../Constants";
 import CustomText from "../components/common/Text";
-
+import { useDispatch } from "react-redux"
+import { setCode } from "../redux/actions";
+import { checkAccessCode } from "../functions/CreateSurvey";
 export const LandingScreen = ({ navigation }) => {
 
   const styles = StyleSheet.create({
@@ -40,6 +42,7 @@ export const LandingScreen = ({ navigation }) => {
 
   const [surveyCode, setSurveyCode] = useState("")
 
+  const dispatch = useDispatch();
 
   useEffect(() => {
     console.log("hello from landing page")
@@ -58,7 +61,14 @@ export const LandingScreen = ({ navigation }) => {
         onChangeText={(surveyCode) => setSurveyCode(surveyCode)}
       />
       </View>
-      <RoundedButton style={styles.search}><CustomText p1 lightBlue>search</CustomText></RoundedButton>
+      <RoundedButton style={styles.search}
+        onPress={() => {
+          checkAccessCode(surveyCode).then(() => {
+            dispatch(setCode(surveyCode))
+            navigation.navigate("Take")
+          })
+        }}
+      ><CustomText p1 lightBlue>search</CustomText></RoundedButton>
     </View>
   );
 };

@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CreateAccountScreen } from "../screens/auth/CreateAccount";
 import { LandingScreen } from "../screens/LandingScreen";
+import { SurveyTaker } from "../screens/TakeSurvey";
 
 const Auth = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ export const AuthStack = () => {
       <Auth.Screen
         name="CreateAccount"
         component={CreateAccountScreen}
+      />
+      <Auth.Screen
+        name="Take"
+        component={SurveyTaker}
       />
     </Auth.Navigator>
   );

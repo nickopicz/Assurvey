@@ -22,19 +22,15 @@ export const HomeHeader = ({ navigation }) => {
             marginLeft: 10,
             width: 30
         },
-        signOut:{
+        signOut: {
             marginTop: 0,
             marginRight: 10,
             textAlign: "right",
-        }
+        },
     })
 
     const signOut = () => {
-        firebase.auth().signOut().then(() => {
-            navigation.navigate("Signout")
-        }).catch((error) => {
-            console.log(error)
-        });
+        firebase.auth().signOut()
     }
 
     return (
