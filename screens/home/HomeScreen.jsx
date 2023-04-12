@@ -5,10 +5,11 @@ import CustomText from "../../components/common/Text";
 import { Colors } from "../../Constants";
 import { auth } from "../../firebase/firebase";
 import { CustomInput } from "../../components/common/Input";
-
+import { useDispatch } from "react-redux";
+import { setCode } from "../../redux/actions";
 export const HomeScreen = ({ navigation }) => {
-
-    const [code, setCode] = useState("")
+    const dispatch = useDispatch();
+    const [codeId, setCodeId] = useState("")
 
     const styles = StyleSheet.create({
         container: {
@@ -46,13 +47,13 @@ export const HomeScreen = ({ navigation }) => {
             <View style={styles.navContainer}>
                 <CustomInput
                     placeholder="Access Code"
-                    value={code}
-                    onChangeText={setCode}
+                    value={codeId}
+                    onChangeText={setCodeId}
                 />
                 <RoundedButton
                     large
-                    disabled={code === ""}
-                    onPress={() => navigation.navigate("Take")}
+                    disabled={codeId === ""}
+                    onPress={() => { dispatch(setCode(codeId)); navigation.navigate("Take") }}
                     style={styles.takeButton}
                 >
                     <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>

@@ -34,7 +34,6 @@ export async function getSurvey(id: string) {
 
 export async function getSurveyFromCode(code: string) {
     try {
-        const user = auth.currentUser?.email;
 
         const ref = db.collection("surveys").where("code", "==", code);
 
@@ -51,7 +50,7 @@ export async function getSurveyFromCode(code: string) {
         })
         console.log("data of docs from database:", formData)
 
-        return formData;
+        return formData[0];
     } catch (e) {
         throw new Error("error in getting survey list from code ")
     }

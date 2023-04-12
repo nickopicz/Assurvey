@@ -5,13 +5,13 @@ import { RoundedButton } from "../common/Button";
 import { Colors } from "../../Constants";
 import { StyleSheet } from 'react-native';
 
-export const ShortAnswer = ({ question, value, onChange, long }) => {
+export const ShortAnswer = ({ question, value, onChange, long, i }) => {
   const styles = StyleSheet.create({
     container: {
       borderRadius: 10,
       borderColor: Colors.foreground,
       borderWidth: 2,
-      width: "55%",
+      minWidth: 500,
       minHeight: 250,
       marginVertical: 5,
       backgroundColor: Colors.white
@@ -48,7 +48,7 @@ export const ShortAnswer = ({ question, value, onChange, long }) => {
   return (
     <View style={styles.container}>
       <View style={styles.num}>
-        <CustomText p1 foreground>1</CustomText>
+        <CustomText p1 foreground>{i}</CustomText>
       </View>
       <View style={styles.titleContainer}>
         <CustomText h4 navbar>
