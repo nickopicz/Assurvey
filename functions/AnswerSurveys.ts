@@ -24,9 +24,9 @@ import firebase from "firebase";
  * @param answers array of answers from user
  * @param docId id of firebase firestore document object
  */
-export async function submitAnswers(answers: any[], docId: string) {
+export async function submitAnswers(answers: any[], code: string) {
     try {
-        await db.collection("surveys").doc(docId).set({
+        await db.collection("surveys").doc(code).set({
             responses: firebase.firestore.FieldValue.arrayUnion(answers)
         }, { merge: true })
     } catch (e) {

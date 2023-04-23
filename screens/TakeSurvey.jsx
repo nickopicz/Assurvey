@@ -22,14 +22,13 @@ export const SurveyTaker = ({ navigation }) => {
         author: "",
         questions: [],
     });
-    const [docId, setDocId] = useState()
 
 
     const code = useSelector(state => state.codeRed.code)
 
     useEffect(() => {
         getSurveyFromCode(code)
-            .then(res => { setDocId(res.id); setDATA(res) })
+            .then(res => { setDATA(res) })
             .catch((e) => console.warn(e))
 
         return () => {
@@ -47,7 +46,7 @@ export const SurveyTaker = ({ navigation }) => {
         }
 
         //not fully implemented
-        await submitAnswers(data, docId).then((res) => {
+        await submitAnswers(data, code).then((res) => {
             console.log("success submitting");
             navigation.goBack();
 
