@@ -125,6 +125,32 @@ export const CreateScreen = ({ navigation }) => {
         setFormState((prevState) => ({ ...prevState, questions: newItems }))
     }
 
+
+    async function handleSubmit() {
+        console.log("formState code: ", formState.code)
+        await checkAccessCode(formState.code).then((res) => {
+            if (res === true) {
+                if (docId !== "") {
+                    console.log("saving survey")
+                    saveSurvey(docId, formState).catch(e => console.warn(e))
+                } else {
+                    createSurvey(formState);
+                    setFormState({
+                        title: "",
+                        code: "",
+                        isGraded: graded,
+                        author: auth.currentUser.email,
+                        questions: [],
+                    })
+                }
+                console.log("new survey")
+            } else {
+                console.log("already exists")
+            }
+        })
+    }
+
+
     useEffect(() => {
         console.log(open)
         console.log("Data: ", DATA)
@@ -200,26 +226,9 @@ export const CreateScreen = ({ navigation }) => {
             <RoundedButton
                 disabled={formState.code.length === 0 || !formState || !formState.title}
                 style={styles.saveButton}
-                onPress={async () => {
+                onPress={() => {
                     //upload to database and code helper functions will go here
-
-
-                    await checkAccessCode(formState.code).then(() => {
-                        if (docId !== "") {
-                            console.log("saving survey")
-                            saveSurvey(docId, formState).catch(e => console.warn(e))
-                        } else {
-                            createSurvey(formState);
-                            setFormState({
-                                title: "",
-                                code: "",
-                                isGraded: graded,
-                                author: auth.currentUser.email,
-                                questions: [],
-                            })
-                        }
-
-                    }).catch(e => setError(e))
+                    handleSubmit();
                 }}
             >
                 <CustomText white h4>Save / Publish</CustomText>

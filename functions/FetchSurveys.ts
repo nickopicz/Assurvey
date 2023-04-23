@@ -48,7 +48,6 @@ export async function getSurveyFromCode(code: string) {
                 formData.push({ ...doc.data(), id: doc.id })
             });
         })
-        console.log("data of docs from database:", formData)
 
         return formData[0];
     } catch (e) {

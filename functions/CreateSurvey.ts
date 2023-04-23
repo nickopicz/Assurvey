@@ -14,12 +14,11 @@ import firebase from "firebase"
 export async function checkAccessCode(accessCode: string) {
     const codes = await db
         .collection("surveys")
-        .where("accessCode", "==", accessCode)
+        .where("code", "==", accessCode)
         .get();
 
-    if (!codes.empty) {
-        throw new Error("Access code already exists. Please enter a different code.");
-    }
+
+    return codes.empty
 }
 
 

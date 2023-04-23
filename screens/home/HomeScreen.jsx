@@ -7,6 +7,7 @@ import { auth } from "../../firebase/firebase";
 import { CustomInput } from "../../components/common/Input";
 import { useDispatch } from "react-redux";
 import { setCode } from "../../redux/actions";
+import { checkAccessCode } from "../../functions/CreateSurvey";
 export const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [codeId, setCodeId] = useState("")
@@ -53,7 +54,17 @@ export const HomeScreen = ({ navigation }) => {
                 <RoundedButton
                     large
                     disabled={codeId === ""}
-                    onPress={() => { dispatch(setCode(codeId)); navigation.navigate("Take") }}
+                    onPress={() => {
+                        checkAccessCode(codeId).then((res) => {
+                            console.log("res: ", res)
+                            if (res === false) {
+                                dispatch(setCode(codeId));
+                                navigation.navigate("Take");
+                            } else {
+                                console.log("doesnt exist")
+                            }
+                        })
+                    }}
                     style={styles.takeButton}
                 >
                     <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>

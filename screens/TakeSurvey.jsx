@@ -9,6 +9,8 @@ import { Colors } from "../Constants";
 import { getSurveyFromCode } from "../functions/FetchSurveys";
 import { useSelector, useDispatch } from "react-redux";
 import { setCode } from "../redux/actions";
+import { submitAnswers } from "../functions/AnswerSurveys";
+import { auth } from "../firebase/firebase";
 
 
 export const SurveyTaker = ({ navigation }) => {
@@ -17,22 +19,40 @@ export const SurveyTaker = ({ navigation }) => {
     const [DATA, setDATA] = useState({
         title: "",
         code: "",
-
         author: "",
         questions: [],
     });
+    const [docId, setDocId] = useState()
+
 
     const code = useSelector(state => state.codeRed.code)
 
     useEffect(() => {
         getSurveyFromCode(code)
-            .then(res => setDATA(res))
+            .then(res => { setDocId(res.id); setDATA(res) })
             .catch((e) => console.warn(e))
 
         return () => {
             dispatch(setCode(""))
         }
     }, [])
+
+    /**
+     * not a fully implemented function, requires state handling fixes deriving from user input
+     */
+    async function handleSubmit() {
+        let data = {
+            user: auth.currentUser?.email,
+            questions: DATA.questions
+        }
+
+        //not fully implemented
+        await submitAnswers(data, docId).then((res) => {
+            console.log("success submitting");
+            navigation.goBack();
+
+        }).catch((e) => console.warn("error in front end submit: ", e))
+    }
 
     const [input, setInput] = useState("")
 
@@ -136,7 +156,7 @@ export const SurveyTaker = ({ navigation }) => {
                 medium
                 style={styles.completeButton}
                 onPress={() => {
-                    navigation.goBack()
+                    handleSubmit()
                 }}
             >
                 <CustomText p1 navbar>
