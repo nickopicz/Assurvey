@@ -6,7 +6,7 @@ import { RoundedButton } from "../../components/common/Button";
 import { useDispatch } from "react-redux";
 import { getSurveyList } from "../../functions/FetchSurveys";
 import { EditItem } from "../../components/EditMenuComponent";
-import { setDocId } from "../../redux/actions";
+import { setDocId, setEditing } from "../../redux/actions";
 
 export const EditMenuScreen = ({ navigation }) => {
 
@@ -47,6 +47,7 @@ export const EditMenuScreen = ({ navigation }) => {
                         <EditItem title={item.item.title} onPress={() => {
                             console.log("item: ", item.item)
                             dispatch(setDocId(item.item.id))
+                            dispatch(setEditing(true));
                             navigation.navigate("Create")
                         }} />
                     )}

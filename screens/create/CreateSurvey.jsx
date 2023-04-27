@@ -10,7 +10,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { CreateMatching } from "../../components/questions/MatchingQuestion";
 import { CreateMC } from "../../components/questions/MCQuestion";
 import { CreateOpen } from "../../components/questions/OpenQuestion";
-import { setDocId } from "../../redux/actions";
+import { setDocId, setEditing } from "../../redux/actions";
 import CustomText from "../../components/common/Text";
 import { checkAccessCode, createSurvey, saveSurvey } from "../../functions/CreateSurvey";
 import { auth } from "../../firebase/firebase";
@@ -100,6 +100,8 @@ export const CreateScreen = ({ navigation }) => {
         (state) => state.docIdRed.docId
     )
 
+    const editing = useSelector((state) => state.editingRed.editing)
+
 
     //a cleanup function to reset the docId state and sets author of survey
     useEffect(() => {
@@ -113,6 +115,7 @@ export const CreateScreen = ({ navigation }) => {
         setFormState((prevState) => ({ ...prevState, author: auth.currentUser.email }))
         return () => {
             dispatch(setDocId(""))
+            dispatch(setEditing(false))
         }
     }, [])
 
@@ -126,10 +129,10 @@ export const CreateScreen = ({ navigation }) => {
     }
 
 
-    async function handleSubmit() {
+    async function handleSubmit(editing) {
         console.log("formState code: ", formState.code)
         await checkAccessCode(formState.code).then((res) => {
-            if (res === true) {
+            if (res === true || editing === true) {
                 if (docId !== "") {
                     console.log("saving survey")
                     saveSurvey(docId, formState).catch(e => console.warn(e))
@@ -228,7 +231,7 @@ export const CreateScreen = ({ navigation }) => {
                 style={styles.saveButton}
                 onPress={() => {
                     //upload to database and code helper functions will go here
-                    handleSubmit();
+                    handleSubmit(editing);
                 }}
             >
                 <CustomText white h4>Save / Publish</CustomText>

@@ -5,37 +5,33 @@ import { RoundedButton } from "../common/Button";
 import { Colors } from "../../Constants";
 import { CustomInput } from "../common/Input";
 import { Ionicons } from "@expo/vector-icons";
+import DropDownPicker from "react-native-dropdown-picker";
 
 
 export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) => {
-    useEffect(() => {
-        console.log("questions in mc: ", questionsProp);
-        console.log("index of question: ", id)
-    }, [])
 
     const [DATA, setDATA] = useState([]);
     const [title, setTitle] = useState("")
     const [itemStates, setItemStates] = useState({});
     const [answers, setAnswers] = useState(questionsProp.answers)
     const [points, setPoints] = useState(questionsProp.points)
+    const [choice, setChoice] = useState(answers)
+    const [choiceVal, setChoiceVal] = useState(null)
+    const [open, setOpen] = useState(false);
 
 
-    /**
-     * 
-     * @param {*} e character to check if number
-     */
-    const handlePointsInput = (e) => {
-        const newValue = e.replace(/[^0-9]/g, '');
-        console.log("regex changed: ", newValue)
-        setPoints(newValue);
-    }
+    useEffect(() => {
+        console.log("questions in mc: ", questionsProp);
+        console.log("index of question: ", id)
+    }, [])
+
 
     const styles = StyleSheet.create({
         container: {
             minWidth: 600,
             backgroundColor: Colors.white,
             marginVertical: 5,
-            minHeight: 150 + DATA.length * 100,
+            minHeight: 400 + DATA.length * 100,
             justifyContent: "flex-start"
 
         },
@@ -77,7 +73,8 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
         saveButton: {
             flexDirection: "row",
             alignItems: "center",
-            alignSelf: "center"
+            alignSelf: "center",
+            marginVertical: 10
 
         },
         pointContainer: {
@@ -87,11 +84,28 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
         },
         pointInput: {
             width: "70%",
+        },
+        dropdownContainer: {
+            width: "100%",
+            alignItems: "center",
+            paddingVertical: 40,
+            minHeight: 100 + DATA.length * 50
         }
     })
 
 
 
+
+
+    /**
+     * 
+     * @param {*} e character to check if number
+     */
+    const handlePointsInput = (e) => {
+        const newValue = e.replace(/[^0-9]/g, '');
+        console.log("regex changed: ", newValue)
+        setPoints(newValue);
+    }
 
 
     /**
@@ -164,6 +178,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
             console.log("whole object: ", item)
 
         })
+
         const [answer, setAnswer] = useState(answers[item.index])
 
 
@@ -251,6 +266,22 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
                     /></View>
                 <CustomText p1 navbar>{points}</CustomText>
             </View>) : null}
+            <View style={styles.dropdownContainer}>
+                <DropDownPicker
+                    stickyHeader={true}
+                    dropDownDirection={"down"}
+                    open={open}
+                    setOpen={setOpen}
+                    value={choiceVal}
+                    setValue={setChoiceVal}
+                    setItems={setChoice}
+                    items={answers}
+                    placeholder="Select answer"
+                    defaultIndex={0}
+                    containerStyle={{ height: 20, width: "50%", zIndex: 2000 }}
+                    onChangeItem={item => console.log(item.id, item.value)}
+                />
+            </View>
             <TouchableOpacity
                 style={styles.saveButton}
                 onPress={() => {
@@ -268,6 +299,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
                             points: points
                         })
                 }}>
+
                 <Ionicons name="checkmark-circle" size={50} color={Colors.confirm} />
                 <CustomText p2 confirm>save</CustomText>
 
