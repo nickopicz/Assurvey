@@ -138,16 +138,11 @@ export const CreateScreen = ({ navigation }) => {
                     saveSurvey(docId, formState).catch(e => console.warn(e))
                 } else {
                     createSurvey(formState);
-                    // setFormState({
-                    //     title: "",
-                    //     code: "",
-                    //     isGraded: graded,
-                    //     author: auth.currentUser.email,
-                    //     questions: [],
-                    // })
+
                 }
                 console.log("new survey")
             } else {
+                setError("choose a new code, the code is already in use")
                 console.log("already exists")
             }
         })
@@ -256,7 +251,7 @@ export const CreateScreen = ({ navigation }) => {
                         placeholder="Custom Access Code"
                         iconName="code"
                         value={formState.code}
-                        onChangeText={(code) => setFormState((prevState) => ({ ...prevState, code: code }))}
+                        onChangeText={(code) => { setFormState((prevState) => ({ ...prevState, code: code })); setError("") }}
                     />
 
                 </View>

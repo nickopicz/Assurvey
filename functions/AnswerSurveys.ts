@@ -26,7 +26,7 @@ import firebase from "firebase";
  */
 export async function submitAnswers(answers: any[], code: string) {
     try {
-        await db.collection("surveys").doc(code).set({
+        await db.collection("results").doc(code).set({
             responses: firebase.firestore.FieldValue.arrayUnion(answers)
         }, { merge: true })
     } catch (e) {

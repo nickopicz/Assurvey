@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux"
 import { setCode } from "../redux/actions";
 import { checkAccessCode } from "../functions/CreateSurvey";
 export const LandingScreen = ({ navigation }) => {
-
+  const [errorMsg, setErrorMsg] = useState("")
   const styles = StyleSheet.create({
     container: {
       justifyContent: "center",
@@ -37,6 +37,10 @@ export const LandingScreen = ({ navigation }) => {
       width: 200,
       height: 50
 
+    },
+    errorText: {
+      textAlign: "center",
+      // marginVertical: 10,
     }
   })
 
@@ -45,8 +49,9 @@ export const LandingScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log("hello from landing page")
-  })
+    console.log("hello from landing page");
+
+  }, [])
   return (
     <View style={styles.container}>
       <RoundedButton style={styles.button} onPress={() => {
@@ -58,14 +63,25 @@ export const LandingScreen = ({ navigation }) => {
         placeholder="Enter your code to take a survey!"
         iconName="list"
         value={surveyCode}
-        onChangeText={(surveyCode) => setSurveyCode(surveyCode)}
+        onChangeText={(surveyCode) => { setSurveyCode(surveyCode); setErrorMsg("") }}
       />
+        <CustomText p2 cancel style={styles.errorText}>{errorMsg}</CustomText>
+
       </View>
       <RoundedButton style={styles.search}
         onPress={() => {
-          checkAccessCode(surveyCode).then(() => {
-            dispatch(setCode(surveyCode))
-            navigation.navigate("Take")
+          checkAccessCode(surveyCode).then((res) => {
+            console.log("res: ", res)
+            if (res === false) {
+              dispatch(setCode(surveyCode));
+              setSurveyCode("")
+              setErrorMsg("")
+              navigation.navigate("Take");
+            } else {
+              setErrorMsg("A survey does not exist with this code, \n maybe try entering it again?")
+              setSurveyCode("")
+              console.log("doesnt exist")
+            }
           })
         }}
       ><CustomText p1 lightBlue>search</CustomText></RoundedButton>
