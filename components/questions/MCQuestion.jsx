@@ -15,7 +15,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
     const [itemStates, setItemStates] = useState({});
     const [answers, setAnswers] = useState(questionsProp.answers)
     const [points, setPoints] = useState(questionsProp.points)
-    const [choice, setChoice] = useState(answers)
+    const [choice, setChoice] = useState(questionsProp.answers)
     const [choiceVal, setChoiceVal] = useState(null)
     const [open, setOpen] = useState(false);
 
@@ -31,7 +31,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
             minWidth: 600,
             backgroundColor: Colors.white,
             marginVertical: 5,
-            minHeight: 400 + DATA.length * 100,
+            minHeight: open ? 800 + DATA.length * 100 : 400 + DATA.length * 100,
             justifyContent: "flex-start"
 
         },
@@ -94,6 +94,17 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
     })
 
 
+    useEffect(() => {
+        let outputArray = questionsProp.answers.map((str, index) => {
+            return {
+                label: str,
+                value: index
+            };
+        });
+
+        setChoice(outputArray)
+        setChoiceVal(questionsProp.correctAnswer)
+    }, [questionsProp])
 
 
 
@@ -204,7 +215,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
                     removeAnswer(item.index)
 
                 }}>
-                    <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
+                    <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
                 </TouchableOpacity>
             </View>
         )
@@ -212,7 +223,7 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.delete} onPress={del}>
-                <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
+                <Ionicons name="remove-circle" size={40} color={Colors.cancel} />
             </TouchableOpacity>
             <CustomText p1 navbar style={{ textAlign: "center", maxWidth: "70%", alignSelf: "center", marginVertical: 5 }}>
                 {titleProp}
@@ -275,11 +286,11 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
                     value={choiceVal}
                     setValue={setChoiceVal}
                     setItems={setChoice}
-                    items={answers}
+                    items={choice}
                     placeholder="Select answer"
                     defaultIndex={0}
                     containerStyle={{ height: 20, width: "50%", zIndex: 2000 }}
-                    onChangeItem={item => console.log(item.id, item.value)}
+                    onChangeItem={item => console.log("chosen object: ", item.id, item.value)}
                 />
             </View>
             <TouchableOpacity
@@ -289,14 +300,16 @@ export const CreateMC = ({ save, del, id, titleProp, questionsProp, graded }) =>
                         {
                             title: title,
                             answers: answers,
-                            points: points
+                            points: points,
+                            correctAnswer: choiceVal
                         });
                     save(id,
                         {
                             title: title,
                             answers: answers,
                             type: 0,
-                            points: points
+                            points: points,
+                            correctAnswer: choiceVal
                         })
                 }}>
 

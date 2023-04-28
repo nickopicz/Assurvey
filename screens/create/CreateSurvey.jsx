@@ -138,13 +138,13 @@ export const CreateScreen = ({ navigation }) => {
                     saveSurvey(docId, formState).catch(e => console.warn(e))
                 } else {
                     createSurvey(formState);
-                    setFormState({
-                        title: "",
-                        code: "",
-                        isGraded: graded,
-                        author: auth.currentUser.email,
-                        questions: [],
-                    })
+                    // setFormState({
+                    //     title: "",
+                    //     code: "",
+                    //     isGraded: graded,
+                    //     author: auth.currentUser.email,
+                    //     questions: [],
+                    // })
                 }
                 console.log("new survey")
             } else {

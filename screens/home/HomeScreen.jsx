@@ -11,6 +11,7 @@ import { checkAccessCode } from "../../functions/CreateSurvey";
 export const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
     const [codeId, setCodeId] = useState("")
+    const [errorMsg, setErrorMsg] = useState("");
 
     const styles = StyleSheet.create({
         container: {
@@ -39,6 +40,10 @@ export const HomeScreen = ({ navigation }) => {
         },
         navContainer: {
             alignItems: "center"
+        },
+        errorText: {
+            textAlign: "center",
+            width: "100%"
         }
     })
 
@@ -49,8 +54,9 @@ export const HomeScreen = ({ navigation }) => {
                 <CustomInput
                     placeholder="Access Code"
                     value={codeId}
-                    onChangeText={setCodeId}
+                    onChangeText={(text) => { setCodeId(text); setErrorMsg("") }}
                 />
+                <CustomText style={styles.errorText} p2 cancel>{errorMsg}</CustomText>
                 <RoundedButton
                     large
                     disabled={codeId === ""}
@@ -59,8 +65,10 @@ export const HomeScreen = ({ navigation }) => {
                             console.log("res: ", res)
                             if (res === false) {
                                 dispatch(setCode(codeId));
+                                setErrorMsg("")
                                 navigation.navigate("Take");
                             } else {
+                                setErrorMsg("A survey does not exist with this code, \n maybe try entering it again?")
                                 console.log("doesnt exist")
                             }
                         })

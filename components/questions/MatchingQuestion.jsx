@@ -243,7 +243,7 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
                     removeAnswer(item.index)
 
                 }}>
-                    <Ionicons name="remove-circle" size={50} color={Colors.cancel} />
+                    <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
                 </TouchableOpacity>
             </View>
         )
@@ -251,7 +251,7 @@ export const CreateMatching = ({ save, del, id, titleProp, questionsProp, graded
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.delete} onPress={del}>
-                <Ionicons name="remove-circle" size={40} color={Colors.navbar} />
+                <Ionicons name="remove-circle" size={40} color={Colors.cancel} />
             </TouchableOpacity>
             <CustomText p1 navbar style={{ textAlign: "center", maxWidth: "70%", alignSelf: "center", marginVertical: 5 }}>
                 {titleProp}
