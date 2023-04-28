@@ -8,28 +8,62 @@ import { NavigationContainer } from '@react-navigation/native';
 /*import { auth } from "./firebase/firebase";
 import { HomeStack } from "./navigation/HomeStack";
 import CustomText from "./components/common/Text";
-import { Colors } from "./Constants";*/
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/home/HomeScreen.jsx";
-//import Login from "./screens/auth/Login";
-//import { CreateAccountScreen } from "./screens/auth/CreateAccount";
-import CreateScreen from "./screens/create/CreateScreen.jsx";
-import CreateSurvey from './screens/create/CreateSurvey.jsx';
-import TakeSurvey from "./screens/TakeSurvey.jsx";
+import { Colors } from "./Constants";
+import { Provider } from "react-redux";
+import { Store } from "./redux/store";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  return(
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen}/>
-        <Stack.Screen name="CreateScreen" component={CreateScreen}/>
-        <Stack.Screen name="Create" component={CreateSurvey}/>
-        <Stack.Screen name="Take" component={TakeSurvey}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+  let [fontsLoaded] = useFonts({
+    "Montserrat-Regular": require("./assets/font/Montserrat-Regular.ttf"),
+  });
+  const [loggedIn, setLoggedIn] = useState()
+
+  useEffect(() => {
+    auth.onAuthStateChanged(function (user) {
+      try {
+        if (user) {
+          setLoggedIn(true);
+        } else {
+          setLoggedIn(false);
+        }
+      } catch (error) {
+        console.error(error);
+        setLoggedIn(false)
+      }
+    });
+  });
+
+  if (!fontsLoaded) {
+    return (
+      <View style={{
+        backgroundColor: Colors.light,
+        height: "100%",
+        width: "100%",
+        justifyContent: "center",
+        alignItems: "center"
+      }}>
+        <CustomText h1 navbar>Loading ... </CustomText>
+      </View>
+    )
+  }
+  if (loggedIn === true) {
+    return (
+      <NavigationContainer>
+        <HomeStack />
+      </NavigationContainer>
+    )
+  }
+  else if (loggedIn === false) {
+    return (
+      <NavigationContainer>
+        <AuthStack />
+      </NavigationContainer>
+    );
+  }
+
+
+}
 
 

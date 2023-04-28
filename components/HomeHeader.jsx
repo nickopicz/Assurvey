@@ -2,7 +2,7 @@ import { Entypo } from "@expo/vector-icons";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import { Colors } from "../Constants";
 import CustomText from "./common/Text";
-
+import firebase from "firebase";
 
 export const HomeHeader = ({ navigation }) => {
     const styles = StyleSheet.create({
@@ -21,8 +21,20 @@ export const HomeHeader = ({ navigation }) => {
             marginTop: 10,
             marginLeft: 10,
             width: 30
+        },
+        signOut: {
+            marginTop: 0,
+            marginRight: 10,
+            alignSelf: "flex-end",
+            color: Colors.navbar,
+            width: 60
         }
     })
+
+    const signOut = () => {
+        firebase.auth().signOut()
+    }
+
     return (
         <View style={styles.container}>
             <TouchableOpacity onPress={() => {
@@ -39,6 +51,13 @@ export const HomeHeader = ({ navigation }) => {
                     style={styles.titleButton}
                 >
                     <CustomText h1 u contrast style={styles.title}>Asurvey</CustomText>
+                </TouchableOpacity>
+            </View>
+            <View>
+                <TouchableOpacity onPress={signOut}
+                    style={styles.titleButton}
+                >
+                    <CustomText style={styles.signOut}>Sign Out</CustomText>
                 </TouchableOpacity>
             </View>
         </View>

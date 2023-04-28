@@ -1,24 +1,99 @@
 import { useState } from "react";
-import { View, StyleSheet, Text, TextInput, Button } from "react-native";
-import { auth, db } from "../../firebase/firebase";
+import { View, StyleSheet } from "react-native";
+import { RoundedButton } from "../../components/common/Button";
+import CustomText from "../../components/common/Text";
+import { Colors } from "../../Constants";
+import { auth } from "../../firebase/firebase";
+import { CustomInput } from "../../components/common/Input";
+import { useDispatch } from "react-redux";
+import { setCode } from "../../redux/actions";
+import { checkAccessCode } from "../../functions/CreateSurvey";
+export const HomeScreen = ({ navigation }) => {
+    const dispatch = useDispatch();
+    const [codeId, setCodeId] = useState("")
+    const [errorMsg, setErrorMsg] = useState("");
 
-const HomeScreen = ({navigation}) => {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
             justifyContent: "center",
             height: "100%"
+        },
+        takeButton: {
+            borderWidth: 2,
+            borderColor: Colors.foreground,
+            marginVertical: 20,
+
+
+        },
+        createButton: {
+            backgroundColor: Colors.confirm,
+            borderWidth: 2,
+            marginVertical: 20,
+        },
+        editButton: {
+            backgroundColor: Colors.light,
+            marginVertical: 20,
+            borderWidth: 2,
+            borderColor: Colors.foreground,
+
+        },
+        navContainer: {
+            alignItems: "center"
+        },
+        errorText: {
+            textAlign: "center",
+            width: "100%"
         }
     });
 
     return (
-        <View styles={styles.container}>
-            <Button
-                title="Create Survey"
-                onPress={() => navigation.navigate("CreateScreen")}/>
-            <Button
-                title="View Survey"
-                onPress={() => navigation.navigate("Take")}/>
+        <View style={styles.container} >
+            <CustomText h1 navbar>Welcome , {auth.currentUser.displayName}</CustomText>
+            <View style={styles.navContainer}>
+                <CustomInput
+                    placeholder="Access Code"
+                    value={codeId}
+                    onChangeText={(text) => { setCodeId(text); setErrorMsg("") }}
+                />
+                <CustomText style={styles.errorText} p2 cancel>{errorMsg}</CustomText>
+                <RoundedButton
+                    large
+                    disabled={codeId === ""}
+                    onPress={() => {
+                        checkAccessCode(codeId).then((res) => {
+                            console.log("res: ", res)
+                            if (res === false) {
+                                dispatch(setCode(codeId));
+                                setErrorMsg("")
+                                navigation.navigate("Take");
+                            } else {
+                                setErrorMsg("A survey does not exist with this code, \n maybe try entering it again?")
+                                console.log("doesnt exist")
+                            }
+                        })
+                    }}
+                    style={styles.takeButton}
+                >
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Take Survey</CustomText>
+                </RoundedButton>
+                <RoundedButton
+                    large
+                    onPress={() => navigation.navigate("Create")}
+                    style={styles.createButton}
+                >
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Create Survey</CustomText>
+                </RoundedButton>
+
+                <RoundedButton
+                    large
+                    onPress={() => navigation.navigate("EditMenu")}
+                    style={styles.editButton}
+                >
+                    <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Edit Survey</CustomText>
+                </RoundedButton>
+
+            </View>
         </View>
     )
 }

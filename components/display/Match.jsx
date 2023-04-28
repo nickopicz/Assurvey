@@ -5,14 +5,14 @@ import { RadioButton } from "react-native-paper";
 import CustomText from "../common/Text";
 import { Colors } from "../../Constants";
 import DropDownPicker from "react-native-dropdown-picker";
-export const Matching = ({ question, answers, questionSet, size }) => {
+export const Matching = ({ question, answers, questionSet, size, i }) => {
 
     const styles = StyleSheet.create({
         container: {
             borderRadius: 10,
             borderColor: Colors.foreground,
             borderWidth: 2,
-            width: "55%",
+            minWidth: 500,
             minHeight: 250,
             marginVertical: 5,
             backgroundColor: Colors.white
@@ -46,8 +46,7 @@ export const Matching = ({ question, answers, questionSet, size }) => {
     })
 
     const [checked, setChecked] = useState("unchecked");
-    const [pressed, setPressed] = useState(false)
-    const [zindex, setzIndex] = useState(1000)
+
 
     /**
      * 
@@ -59,14 +58,16 @@ export const Matching = ({ question, answers, questionSet, size }) => {
         const [choice, setChoice] = useState(answers)
         const [choiceVal, setChoiceVal] = useState(null)
         const [open, setOpen] = useState(false);
-        const [selected, setSelected] = useState(false); // state variable to toggle the zIndex value
+        console.log(" ---------------------------------- \n item: ", content, " \n ---------------------------------- ")
 
-        console.log("zIndex: ", answers.length - idx)
+        console.log("size: ", size)
+        console.log("zIndex: ", size - idx)
         console.log("answers: ", answers)
+        console.log("questions: ", questionSet)
 
         return (
             <View
-                style={[styles.answer, { minHeight: open === true ? 40 * answers.length : 100 }]}
+                style={[styles.answer, { minHeight: open === true ? 100 * choice.length : 100 }]}
                 zIndex={(size - idx)}
             >
 
@@ -85,7 +86,7 @@ export const Matching = ({ question, answers, questionSet, size }) => {
                     placeholder="Select answer"
                     defaultIndex={0}
                     containerStyle={{ height: 20, width: "50%", zIndex: 2000 }}
-                    onChangeItem={item => console.log(item.label, item.value)}
+                    onChangeItem={item => console.log(item.id, item.value)}
                 />
 
             </View>
@@ -94,24 +95,25 @@ export const Matching = ({ question, answers, questionSet, size }) => {
 
     const NewFlatList = ({ data }) => {
 
+        console.log("------------- \n data in matching flatlist:  \n", data, " \n ============================= \n")
 
 
         return (
             <FlatList
                 style={{ paddingVertical: 25, paddingTop: 120, width: "90%", alignSelf: "center" }}
-                data={questionSet}
+                data={data}
                 renderItem={({ item }) => (
                     <RenderItem
-                        idx={item.id}
-                        content={item.question}
+                        idx={item.value}
+                        content={questionSet[item.value].question}
                         onPress={() => {
-                            setChecked(item.id)
+                            setChecked(item.value)
                         }
                         }
-                        status={checked === item.id ? "checked" : "unchecked"}
+                        status={checked === item.value ? "checked" : "unchecked"}
                     />
                 )}
-                keyExtractor={(item) => item.id}
+                // keyExtractor={(item) => item.id}
                 scrollEnabled={false}
             />
         )
@@ -120,7 +122,7 @@ export const Matching = ({ question, answers, questionSet, size }) => {
     return (
         <View style={styles.container}>
             <View style={styles.num}>
-                <CustomText p1 foreground>{1}</CustomText>
+                <CustomText p1 foreground>{i}</CustomText>
             </View>
 
             <NewFlatList data={answers} />

@@ -10,21 +10,32 @@ import firebase from "firebase"
  * @returns id for the firebase document object, required to add questions to survey doc
  * **NOTE ACCESSCODE** requires a unique user generated code, use "checkCode(code)" for that
  */
-export async function createSurvey(user: string, questions: any[], accessCode: string) {
+
+export async function checkAccessCode(accessCode: string) {
+    const codes = await db
+        .collection("surveys")
+        .where("code", "==", accessCode)
+        .get();
+
+
+    return codes.empty
+}
+
+
+/**
+ * 
+ * @param form state data from create survey page
+ * @returns promise that indicates if creation was successful
+ */
+export async function createSurvey(form: any) {
 
     try {
-
-        const temp: {
-            creator: string,
-            accessCode: string,
-        } = {
-            creator: user,
-            accessCode: accessCode,
-
-        }
-
         let id = await db.collection("surveys").add({
-            temp
+            author: form.author,
+            code: form.code,
+            isGraded: form.isGraded,
+            questions: form.questions,
+            title: form.title,
         }).then((res) => { return res.id })
 
         return id;
@@ -33,51 +44,21 @@ export async function createSurvey(user: string, questions: any[], accessCode: s
     }
 }
 
-/**
- * 
- * @param id document id that was returned from create survey function
- * @param question: string, question content
- * @param answers: string array, array of questions... for SHORT, it is just any preface for a user to answer
- * @param correctAnswer 
- * @param type: string, can be of ["MC", "MATCH", "SHORT"] aka multiple choice, matching, and short answer
- * 
- * **NOTE FOR QUESTION TYPES** use correct answer as the spot to put either for MC : the correct answer, for MATCH:  an array of the correct 
- * options for matching in order of the questions, and for SHORT: null
- */
-export async function saveQuestion(id: string, question: string, answers: string[], correctAnswer: any, type: string) {
+export async function saveSurvey(docId: string, form: any) {
     try {
+        await db.collection("surveys").doc(docId).set({
+            author: form.author,
+            code: form.code,
+            isGraded: form.isGraded,
+            questions: form.questions,
+            title: form.title,
+        }).then((res) => {
+            console.log("save success", res)
+        })
 
-        let temp: any;
-        if (type === "MC") {
-            temp = {
-                question: question,
-                answers: answers,
-                correctAnswer: correctAnswer,
-                type: "MC"
-            }
-        }
-
-        if (type === "MATCH") {
-            temp = {
-                question: question,
-                answers: answers,
-                correctAnswer: correctAnswer,
-                type: "MATCH"
-            }
-        }
-
-        if (type === "SHORT") {
-            temp = {
-                question: question,
-                answers: answers,
-                type: "SHORT",
-            }
-        }
-
-        await db.collection("surveys").doc(id).set({
-            questions: firebase.firestore.FieldValue.arrayUnion(temp)
-        }, { merge: true })
     } catch (e) {
-        console.warn("error in saveQuestion: ", e)
+        throw new Error("warning in saving survey")
     }
 }
+
+

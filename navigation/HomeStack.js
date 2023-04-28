@@ -3,9 +3,14 @@ import { HomeHeader } from "../components/HomeHeader";
 import { CreateScreen } from "../screens/create/CreateScreen";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { SurveyTaker } from "../screens/TakeSurvey";
+import { EditMenuScreen } from "../screens/create/EditMenu";
 
 const Stack = createNativeStackNavigator();
 
+/**
+ *
+ * @returns homestack, or that which is shown when a user is authenticated
+ */
 export const HomeStack = () => {
   return (
     <Stack.Navigator
@@ -25,6 +30,10 @@ export const HomeStack = () => {
       <Stack.Screen
         name="Create"
         component={CreateScreen}
+      />
+      <Stack.Screen
+        name="EditMenu"
+        component={EditMenuScreen}
       />
     </Stack.Navigator>
   );
