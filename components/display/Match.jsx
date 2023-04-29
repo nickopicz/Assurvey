@@ -1,10 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, FlatList, TouchableWithoutFeedback, TouchableOpacity } from "react-native";
 import { RoundedButton } from "../common/Button";
 import { RadioButton } from "react-native-paper";
 import CustomText from "../common/Text";
 import { Colors } from "../../Constants";
 import DropDownPicker from "react-native-dropdown-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAnswers } from "../../redux/actions";
+
+/**
+ * component used to render a question on taker side
+ * 
+ * @param {*} question title of question 
+ * @param {*} answers options for each individual match set
+ * @param {*} questionSet question set for each matcher
+ * @param {*} size amount of sub questions for individual question
+ * @param {*} i length of total survey
+ */
 export const Matching = ({ question, answers, questionSet, size, i }) => {
 
     const styles = StyleSheet.create({
@@ -45,8 +57,14 @@ export const Matching = ({ question, answers, questionSet, size, i }) => {
         }
     })
 
+    const userAnswers = useSelector((state) => state.userAnswersRed.userAnswers)
+
     const [checked, setChecked] = useState("unchecked");
 
+
+
+
+    const dispatch = useDispatch();
 
     /**
      * 
@@ -55,15 +73,16 @@ export const Matching = ({ question, answers, questionSet, size, i }) => {
      * @returns 
      */
     const RenderItem = ({ content, idx }) => {
+
+
+
+
         const [choice, setChoice] = useState(answers)
         const [choiceVal, setChoiceVal] = useState(null)
         const [open, setOpen] = useState(false);
-        console.log(" ---------------------------------- \n item: ", content, " \n ---------------------------------- ")
 
-        console.log("size: ", size)
-        console.log("zIndex: ", size - idx)
-        console.log("answers: ", answers)
-        console.log("questions: ", questionSet)
+
+
 
         return (
             <View
@@ -80,13 +99,27 @@ export const Matching = ({ question, answers, questionSet, size, i }) => {
                     open={open}
                     setOpen={setOpen}
                     value={choiceVal}
-                    setValue={setChoiceVal}
+                    setValue={
+                        setChoiceVal}
                     setItems={setChoice}
                     items={choice}
                     placeholder="Select answer"
                     defaultIndex={0}
+                    onChangeValue={(val) => {
+                        let temp = userAnswers;
+                        console.log("user ans arr: ", temp)
+                        console.log("selected: ", val)
+
+                        temp[i - 1] = {
+                            ...temp[i - 1],
+                            [idx]: val,
+                        }
+                        dispatch(setUserAnswers(temp));
+
+                    }}
+
                     containerStyle={{ height: 20, width: "50%", zIndex: 2000 }}
-                    onChangeItem={item => console.log(item.id, item.value)}
+
                 />
 
             </View>
@@ -95,7 +128,6 @@ export const Matching = ({ question, answers, questionSet, size, i }) => {
 
     const NewFlatList = ({ data }) => {
 
-        console.log("------------- \n data in matching flatlist:  \n", data, " \n ============================= \n")
 
 
         return (

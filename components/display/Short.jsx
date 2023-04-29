@@ -1,9 +1,12 @@
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import CustomText from "../common/Text";
 import { CustomInput } from "../common/Input";
 import { RoundedButton } from "../common/Button";
 import { Colors } from "../../Constants";
 import { StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAnswers } from "../../redux/actions";
 
 export const ShortAnswer = ({ question, value, onChange, long, i }) => {
   const styles = StyleSheet.create({
@@ -45,6 +48,14 @@ export const ShortAnswer = ({ question, value, onChange, long, i }) => {
     }
   })
 
+  const [text, setText] = useState("")
+
+  const dispatch = useDispatch();
+
+  const userAnswers = useSelector((state) => state.userAnswersRed.userAnswers)
+
+
+
   return (
     <View style={styles.container}>
       <View style={styles.num}>
@@ -61,7 +72,12 @@ export const ShortAnswer = ({ question, value, onChange, long, i }) => {
           large
           placeholder="Type your answer here..."
           value={value}
-          onChangeText={onChange}
+          onChangeText={(val) => {
+            setText(val);
+            let temp = userAnswers;
+            temp[i - 1] = val
+            dispatch(setUserAnswers(temp))
+          }}
           multiline={true}
           iconName="clipboard"
           autoCorrect={false}

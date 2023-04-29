@@ -4,6 +4,8 @@ import { RadioButton } from "react-native-paper";
 import { CustomInput } from "../common/Input";
 import CustomText from "../common/Text";
 import { Colors } from "../../Constants";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserAnswers } from "../../redux/actions";
 
 export const MultipleChoice = ({ answers, question, i }) => {
   const styles = StyleSheet.create({
@@ -49,6 +51,8 @@ export const MultipleChoice = ({ answers, question, i }) => {
     console.log("multiple choice data", answers, question)
   })
   const [checked, setChecked] = useState("unchecked");
+  const userAnswers = useSelector((state) => state.userAnswersRed.userAnswers)
+  const dispatch = useDispatch();
 
 
   const RenderItem = ({ content, onPress, status }) => {
@@ -81,7 +85,14 @@ export const MultipleChoice = ({ answers, question, i }) => {
             content={item.answer}
             onPress={() => {
               console.log("item: ", item)
+
               setChecked(item.id)
+
+              let temp = userAnswers;
+
+              temp[i - 1] = item.id;
+              console.log("going to state: ", temp)
+              dispatch(setUserAnswers(temp))
             }
             }
             status={checked === item.id ? "checked" : "unchecked"}

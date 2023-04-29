@@ -8,7 +8,7 @@ import { ShortAnswer } from "../components/display/Short"
 import { Colors } from "../Constants";
 import { getSurveyFromCode } from "../functions/FetchSurveys";
 import { useSelector, useDispatch } from "react-redux";
-import { setCode } from "../redux/actions";
+import { setCode, setUserAnswers } from "../redux/actions";
 import { submitAnswers } from "../functions/AnswerSurveys";
 import { auth } from "../firebase/firebase";
 
@@ -25,16 +25,35 @@ export const SurveyTaker = ({ navigation }) => {
 
 
     const code = useSelector(state => state.codeRed.code)
+    const userAnswers = useSelector((state) => state.userAnswersRed.userAnswers)
+
 
     useEffect(() => {
         getSurveyFromCode(code)
-            .then(res => { setDATA(res) })
+            .then(res => {
+                setDATA(res);
+
+
+            })
             .catch((e) => console.warn(e))
+
 
         return () => {
             dispatch(setCode(""))
+            dispatch(setUserAnswers([]))
+
         }
     }, [])
+
+
+    useEffect(() => {
+        if (DATA.length !== 0) {
+            let newArr = new Array(DATA.questions.length)
+            console.log("new array: ", newArr)
+            dispatch(setUserAnswers(newArr))
+        }
+
+    }, [DATA])
 
     /**
      * not a fully implemented function, requires state handling fixes deriving from user input
@@ -42,7 +61,7 @@ export const SurveyTaker = ({ navigation }) => {
     async function handleSubmit() {
         let data = {
             user: auth.currentUser?.email,
-            questions: DATA.questions
+            userAnswers: userAnswers
         }
 
         //not fully implemented
