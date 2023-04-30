@@ -31,7 +31,11 @@ export async function getSurvey(id: string) {
     }).catch(e => console.warn(e))
 }
 
-
+/**
+ * 
+ * @param code user generated code by creator
+ * @returns the survey data
+ */
 export async function getSurveyFromCode(code: string) {
     try {
 
@@ -54,3 +58,22 @@ export async function getSurveyFromCode(code: string) {
         throw new Error("error in getting survey list from code ")
     }
 }
+
+/**
+ * 
+ * @param code user generated code by creator to get doc from that code in responses collection
+ * @returns the survey data
+ */
+export async function getSurveyResponses(code: string) {
+    try {
+
+        const ref = await db.collection("surveys").doc(code).get()
+
+
+        console.log("responses: ", ref.data)
+        return ref.data;
+    } catch (e) {
+        throw new Error("error in getting survey list from code ")
+    }
+}
+
