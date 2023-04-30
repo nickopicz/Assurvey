@@ -66,12 +66,30 @@ export async function getSurveyFromCode(code: string) {
  */
 export async function getSurveyResponses(code: string) {
     try {
+        console.log("getting doc: ", code)
+        const ref: any = await db.collection("results").doc(code).get().then((doc) => {
+            if (doc.exists) {
+                console.log("responses after getting: ", doc.data())
+                return doc.data()
+            }
+        })
 
-        const ref = await db.collection("surveys").doc(code).get()
 
 
-        console.log("responses: ", ref.data)
-        return ref.data;
+        // console.log("indices: ", indices)
+
+        let options: [any] = ref.responses.map((el: any, index: number) => {
+            return { label: el.user, value: index }
+        })
+
+        console.log("optins: ", options)
+
+
+        return {
+            data: ref.responses,
+            options: options,
+        }
+
     } catch (e) {
         throw new Error("error in getting survey list from code ")
     }

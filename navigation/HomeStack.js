@@ -4,6 +4,8 @@ import { CreateScreen } from "../screens/create/CreateSurvey";
 import { HomeScreen } from "../screens/home/HomeScreen";
 import { SurveyTaker } from "../screens/TakeSurvey";
 import { EditMenuScreen } from "../screens/create/EditMenu";
+import { GradeMenuScreen } from "../screens/grade/GradeMenu";
+import { SurveyGrader } from "../screens/grade/GradingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +36,14 @@ export const HomeStack = () => {
       <Stack.Screen
         name="EditMenu"
         component={EditMenuScreen}
+      />
+      <Stack.Screen
+        name="GradeMenu"
+        component={GradeMenuScreen}
+      />
+      <Stack.Screen
+        name="Grade"
+        component={SurveyGrader}
       />
     </Stack.Navigator>
   );
