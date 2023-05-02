@@ -183,7 +183,7 @@ export const SurveyGrader = ({ navigation }) => {
             />
             <RoundedButton
                 medium
-                disabled={grade > 0}
+                disabled={grade === ""}
                 style={styles.completeButton}
                 onPress={() => {
                     handleSubmit()
