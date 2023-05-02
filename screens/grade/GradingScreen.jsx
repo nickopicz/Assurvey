@@ -41,7 +41,7 @@ export const SurveyGrader = ({ navigation }) => {
     async function handleSubmit() {
         console.log("user: ", choice[choiceVal].label);
         console.log("doc id: ", docId)
-        await gradeSurvey(docId, choice[choiceVal].label, grade)
+        await gradeSurvey(docId, choice[choiceVal].label, parseInt(grade))
     }
 
     /**
