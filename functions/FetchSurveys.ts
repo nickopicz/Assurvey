@@ -95,3 +95,26 @@ export async function getSurveyResponses(code: string) {
     }
 }
 
+
+/**
+ * 
+ * @param code code for accessing results firebase doc
+ * @param user user string email
+ * @param grade grade given by creator to send to firebase object
+ */
+export async function gradeSurvey(docId: string, user: string, grade: number) {
+    try {
+
+        console.log("user obj: ", {
+            user: user,
+            grade: grade,
+        })
+        await db.collection("surveys").doc(docId).set({
+            [user]: grade
+        }, { merge: true })
+
+    } catch (error) {
+        console.warn("error in grading function: ", error)
+    }
+}
+

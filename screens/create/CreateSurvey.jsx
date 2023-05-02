@@ -135,9 +135,9 @@ export const CreateScreen = ({ navigation }) => {
             if (res === true || editing === true) {
                 if (docId !== "") {
                     console.log("saving survey")
-                    saveSurvey(docId, formState).catch(e => console.warn(e))
+                    saveSurvey(docId, formState, graded).catch(e => console.warn(e))
                 } else {
-                    createSurvey(formState);
+                    createSurvey(formState, graded);
 
                 }
                 console.log("new survey")

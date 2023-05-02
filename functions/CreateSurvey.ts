@@ -27,7 +27,7 @@ export async function checkAccessCode(accessCode: string) {
  * @param form state data from create survey page
  * @returns promise that indicates if creation was successful
  */
-export async function createSurvey(form: any) {
+export async function createSurvey(form: any, graded: boolean) {
 
     try {
         let id = await db.collection("surveys").add({
@@ -36,6 +36,7 @@ export async function createSurvey(form: any) {
             isGraded: form.isGraded,
             questions: form.questions,
             title: form.title,
+            graded: graded
         }).then((res) => { return res.id })
 
         return id;
@@ -44,7 +45,7 @@ export async function createSurvey(form: any) {
     }
 }
 
-export async function saveSurvey(docId: string, form: any) {
+export async function saveSurvey(docId: string, form: any, graded: boolean) {
     try {
         await db.collection("surveys").doc(docId).set({
             author: form.author,
@@ -52,6 +53,7 @@ export async function saveSurvey(docId: string, form: any) {
             isGraded: form.isGraded,
             questions: form.questions,
             title: form.title,
+            graded: graded
         }).then((res) => {
             console.log("save success", res)
         })

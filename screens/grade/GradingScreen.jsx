@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { RoundedButton } from "../../components/common/Button";
 import CustomText from "../../components/common/Text";
-import { getSurveyFromCode, getSurveyResponses } from "../../functions/FetchSurveys";
+import { getSurveyFromCode, getSurveyResponses, gradeSurvey } from "../../functions/FetchSurveys";
 import { Colors } from "../../Constants";
 import { useSelector, useDispatch } from "react-redux";
 import { setCode, setUserAnswers } from "../../redux/actions";
@@ -12,6 +12,7 @@ import { ShortAnswerGrade } from "../../components/grade/GradeShort";
 import { MatchGrade } from "../../components/grade/GradeMatch";
 import { auth } from "../../firebase/firebase";
 import DropDownPicker from "react-native-dropdown-picker";
+import { CustomInput } from "../../components/common/Input";
 
 export const SurveyGrader = ({ navigation }) => {
     const dispatch = useDispatch();
@@ -28,12 +29,30 @@ export const SurveyGrader = ({ navigation }) => {
     const [open, setOpen] = useState(false);
     const [choiceVal, setChoiceVal] = useState(0)
     const [userIndices, setUserIndices] = useState([])
+    const [grade, setGrade] = useState(0);
 
     const code = useSelector(state => state.codeRed.code)
     const userAnswers = useSelector((state) => state.userAnswersRed.userAnswers)
     const docId = useSelector(
         (state) => state.docIdRed.docId
     )
+
+
+    async function handleSubmit() {
+        console.log("user: ", choice[choiceVal].label);
+        console.log("doc id: ", docId)
+        await gradeSurvey(docId, choice[choiceVal].label, grade)
+    }
+
+    /**
+    * 
+    * @param {*} e character to check if number
+    */
+    const handlePointsInput = (e) => {
+        const newValue = e.replace(/[^0-9]/g, '');
+        console.log("regex changed: ", newValue)
+        setGrade(newValue);
+    }
 
 
     useEffect(() => {
@@ -153,10 +172,18 @@ export const SurveyGrader = ({ navigation }) => {
                             chosenAnswer={userResponses[choiceVal].userAnswers[item.index]}
                         />
                     }}
-                /> : null}
+                /> : (
+                    <CustomText h3 navbar>Sorry, no one has taken this survey yet.</CustomText>
+                )}
             </View>
+            <CustomInput
+                placeholder="Enter a Grade"
+                value={grade}
+                onChangeText={handlePointsInput}
+            />
             <RoundedButton
                 medium
+                disabled={grade > 0}
                 style={styles.completeButton}
                 onPress={() => {
                     handleSubmit()
