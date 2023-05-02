@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 
-import { SET_CODE, SET_DOC_ID, SET_EDITING } from "./actions";
+import { SET_CODE, SET_DOC_ID, SET_EDITING, SET_USER_ANSWERS } from "./actions";
 
 /**
  * reducer for the docId to access a survey to edit
@@ -33,10 +33,20 @@ const editingRed = (editingRed = { editing: false }, action) => {
   }
 };
 
+const userAnswersRed = (userAnswersRed = { userAnswers: [] }, action) => {
+  switch (action.type) {
+    case SET_USER_ANSWERS:
+      return { userAnswers: action.userAnswers };
+    default:
+      return userAnswersRed;
+  }
+};
+
 const reducers = combineReducers({
   docIdRed,
   codeRed,
   editingRed,
+  userAnswersRed,
 });
 
 export default reducers;
