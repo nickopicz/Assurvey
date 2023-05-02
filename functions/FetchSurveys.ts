@@ -31,7 +31,11 @@ export async function getSurvey(id: string) {
     }).catch(e => console.warn(e))
 }
 
-
+/**
+ * 
+ * @param code user generated code by creator
+ * @returns the survey data
+ */
 export async function getSurveyFromCode(code: string) {
     try {
 
@@ -54,3 +58,63 @@ export async function getSurveyFromCode(code: string) {
         throw new Error("error in getting survey list from code ")
     }
 }
+
+/**
+ * 
+ * @param code user generated code by creator to get doc from that code in responses collection
+ * @returns the survey data
+ */
+export async function getSurveyResponses(code: string) {
+    try {
+        console.log("getting doc: ", code)
+        const ref: any = await db.collection("results").doc(code).get().then((doc) => {
+            if (doc.exists) {
+                console.log("responses after getting: ", doc.data())
+                return doc.data()
+            }
+        })
+
+
+
+        // console.log("indices: ", indices)
+
+        let options: [any] = ref.responses.map((el: any, index: number) => {
+            return { label: el.user, value: index }
+        })
+
+        console.log("optins: ", options)
+
+
+        return {
+            data: ref.responses,
+            options: options,
+        }
+
+    } catch (e) {
+        throw new Error("error in getting survey list from code ")
+    }
+}
+
+
+/**
+ * 
+ * @param code code for accessing results firebase doc
+ * @param user user string email
+ * @param grade grade given by creator to send to firebase object
+ */
+export async function gradeSurvey(docId: string, user: string, grade: number) {
+    try {
+
+        console.log("user obj: ", {
+            user: user,
+            grade: grade,
+        })
+        await db.collection("surveys").doc(docId).set({
+            [user]: grade
+        }, { merge: true })
+
+    } catch (error) {
+        console.warn("error in grading function: ", error)
+    }
+}
+

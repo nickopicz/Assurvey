@@ -38,6 +38,12 @@ export const HomeScreen = ({ navigation }) => {
             borderColor: Colors.foreground,
 
         },
+        gradeButton: {
+            backgroundColor: Colors.foreground,
+            marginVertical: 20,
+            borderWidth: 2,
+            borderColor: Colors.foreground,
+        },
         navContainer: {
             alignItems: "center"
         },
@@ -91,6 +97,13 @@ export const HomeScreen = ({ navigation }) => {
                     style={styles.editButton}
                 >
                     <CustomText p2 navbar style={{ paddingHorizontal: 10 }}>Edit Survey</CustomText>
+                </RoundedButton>
+                <RoundedButton
+                    large
+                    onPress={() => navigation.navigate("GradeMenu")}
+                    style={styles.gradeButton}
+                >
+                    <CustomText p2 light style={{ paddingHorizontal: 10 }}>Grade Surveys</CustomText>
                 </RoundedButton>
 
             </View>
