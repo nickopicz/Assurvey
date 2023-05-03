@@ -1,9 +1,10 @@
 import { Text, View, FlatList, Button } from "react-native";
-import { getSurveyList } from "../functions/FetchSurveys";
+import { getUserResponses } from "../functions/FetchSurveys";
 import { getSyntheticLeadingComments } from "typescript";
+import { auth } from "../firebase/firebase";
 
 const ResultsScreen = ({ navigation }) => {
-  const surveys = getSurveyResponses ().;
+  const surveys = getUserResponses(auth.currentUser);
 
   console.log("surveys: " + surveys);
 
