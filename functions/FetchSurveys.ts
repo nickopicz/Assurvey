@@ -103,19 +103,37 @@ export async function getSurveyResponses(code: string) {
  * @param user user string email
  * @param grade grade given by creator to send to firebase object
  */
-export async function gradeSurvey(docId: string, user: string, grade: number) {
+export async function gradeSurvey(docId: string, user: string, grade: number, code: string, title: string) {
     try {
 
         console.log("user obj: ", {
             user: user,
             grade: grade,
         })
+
+        const key = await db.collection("userResults").doc(user).get().then((doc) => {
+            if (doc.exists) {
+                const len = doc.data()?.grades;
+                return len ? len.length : 0;
+            }
+        })
+
+        console.log("setting key: ", length)
         await db.collection("surveys").doc(docId).set({
             grades: firebase.firestore.FieldValue.arrayUnion({
                 score: grade,
                 user: user,
             })
         }, { merge: true })
+
+        await db.collection("userResults").doc(user).set({
+            grades: firebase.firestore.FieldValue.arrayUnion({
+                score: grade,
+                surveyCode: code,
+                title: title,
+                key: key,
+            })
+        })
 
     } catch (error) {
         console.warn("error in grading function: ", error)
@@ -125,10 +143,17 @@ export async function gradeSurvey(docId: string, user: string, grade: number) {
 
 //fetches all survey responses for a specific user and the survey code the user responded to
 export async function getUserResponses(user: string) {
-    try{
-        return db.collection("results").doc("responses");
+    try {
+        return await db.collection("userResults").doc(user).get().then((doc) => {
+            if (doc.exists) {
+                return doc.data()?.grades
+            } else {
+                return []
+            }
+        })
+
     }
-    catch(error){
+    catch (error) {
         console.log("Error: ", error);
     }
 }
