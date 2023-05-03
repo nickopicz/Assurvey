@@ -7,6 +7,7 @@ import { EditMenuScreen } from "../screens/create/EditMenu";
 import { GradeMenuScreen } from "../screens/grade/GradeMenu";
 import { SurveyGrader } from "../screens/grade/GradingScreen";
 import UserScreen from "../screens/home/UserScreen";
+import ResultsScreen from "../screens/ResultsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,34 +23,13 @@ export const HomeStack = () => {
         header: ({ navigation }) => <HomeHeader navigation={navigation} />,
       }}
     >
-      <Stack.Screen
-        name="Home"
-        component={HomeScreen}
-      />
-      <Stack.Screen
-        name="Take"
-        component={SurveyTaker}
-      />
-      <Stack.Screen
-        name="Create"
-        component={CreateScreen}
-      />
-      <Stack.Screen
-        name="EditMenu"
-        component={EditMenuScreen}
-      />
-      <Stack.Screen
-        name="GradeMenu"
-        component={GradeMenuScreen}
-      />
-      <Stack.Screen
-        name="Grade"
-        component={SurveyGrader}
-      />
-      <Stack.Screen
-        name="Results"
-        component={ResultsScreen}
-      />
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Take" component={SurveyTaker} />
+      <Stack.Screen name="Create" component={CreateScreen} />
+      <Stack.Screen name="EditMenu" component={EditMenuScreen} />
+      <Stack.Screen name="GradeMenu" component={GradeMenuScreen} />
+      <Stack.Screen name="Grade" component={SurveyGrader} />
+      <Stack.Screen name="Results" component={ResultsScreen} />
     </Stack.Navigator>
   );
 };
