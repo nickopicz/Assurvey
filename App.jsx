@@ -1,9 +1,9 @@
+import { StyleSheet, Text, View } from "react-native";
+import * as React from 'react';
 import { useEffect, useState } from "react";
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { AuthStack } from "./navigation/AuthStack";
-import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { auth } from "./firebase/firebase";
 import { HomeStack } from "./navigation/HomeStack";
@@ -12,6 +12,7 @@ import { Colors } from "./Constants";
 import { Provider } from "react-redux";
 import { Store } from "./redux/store";
 
+//const Stack = createNativeStackNavigator();
 
 export default function App() {
   let [fontsLoaded] = useFonts({

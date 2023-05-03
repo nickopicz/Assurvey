@@ -118,3 +118,14 @@ export async function gradeSurvey(docId: string, user: string, grade: number) {
     }
 }
 
+
+//fetches all survey responses for a specific user and the survey code the user responded to
+export async function getUserResponses(user: string) {
+    try{
+        return db.collection("results").doc("responses");
+    }
+    catch(error){
+        console.log("Error: ", error);
+    }
+}
+

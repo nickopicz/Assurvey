@@ -184,3 +184,5 @@ export const SurveyTaker = ({ navigation }) => {
         </View>
     )
 }
+
+export default SurveyTaker;
