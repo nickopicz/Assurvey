@@ -185,4 +185,4 @@ export const SurveyTaker = ({ navigation }) => {
     )
 }
 
-export default TakeSurvey;
+export default SurveyTaker;

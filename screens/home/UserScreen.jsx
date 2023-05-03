@@ -31,10 +31,10 @@ const UserScreen = ({props, navigation}) => {
     return(
        <View>
         <FlatList
-        data={props.surveys}
-        renderItem={({survey}) => <SurveyCard title={survey.title} description={survey.description}/>}
-        keyExtractor={survey => survey.id}
-        numColumns={3}/>
+            data={props.surveys}
+            renderItem={({survey}) => <SurveyCard title={survey.title} description={survey.description}/>}
+            keyExtractor={survey => survey.id}
+            numColumns={3}/>
        </View> 
     );
 };
