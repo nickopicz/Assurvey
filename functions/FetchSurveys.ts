@@ -1,4 +1,5 @@
 import { auth, db } from "../firebase/firebase";
+import firebase from "firebase";
 
 export async function getSurveyList() {
     try {
@@ -110,7 +111,10 @@ export async function gradeSurvey(docId: string, user: string, grade: number) {
             grade: grade,
         })
         await db.collection("surveys").doc(docId).set({
-            [user]: grade
+            grades: firebase.firestore.FieldValue.arrayUnion({
+                score: grade,
+                user: user,
+            })
         }, { merge: true })
 
     } catch (error) {

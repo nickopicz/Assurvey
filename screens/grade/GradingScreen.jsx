@@ -44,8 +44,10 @@ export const SurveyGrader = ({ navigation }) => {
         await gradeSurvey(docId, choice[choiceVal].label, parseInt(grade))
     }
 
+
+
+
     /**
-    * 
     * @param {*} e character to check if number
     */
     const handlePointsInput = (e) => {
