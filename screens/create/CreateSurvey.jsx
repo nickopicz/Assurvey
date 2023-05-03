@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { RoundedButton } from "../../components/common/Button";
 import { CustomInput } from "../../components/common/Input";
-import { View, StyleSheet, FlatList } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Colors } from "../../Constants";
 import { AntDesign } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -315,3 +315,5 @@ export const CreateScreen = ({ navigation }) => {
         </View>
     )
 }
+
+export default CreateSurvey;
